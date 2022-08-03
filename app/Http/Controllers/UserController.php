@@ -51,11 +51,25 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
-            'roles' => 'required'
+            'roles' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+
+
+
+
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+
+        if ($files = $request->file('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $input['image'] = "$name";
+        }
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
@@ -104,7 +118,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'confirmed',
-            'roles' => 'required'
+            'roles' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $input = $request->all();
@@ -112,6 +127,14 @@ class UserController extends Controller
             $input['password'] = Hash::make($input['password']);
         }else{
             $input = Arr::except($input,array('password'));
+        }
+
+        if ($files = $request->file('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $input['image'] = "$name";
         }
 
         $user = User::find($id);

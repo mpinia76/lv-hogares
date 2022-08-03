@@ -35,7 +35,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('users.store') }}" method="post">
+                        <form role="form" action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
@@ -61,7 +61,11 @@
                                         <label for="roles">Roles</label>
                                         {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
                                     </div>
+                                    <div class="form-group">
+                                        Imagen
+                                        <input type="file" name="image" class="form-control" placeholder="">
 
+                                    </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         <a href='{{ route('users.index') }}' class="btn btn-warning">Volver</a>

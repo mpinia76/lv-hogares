@@ -34,7 +34,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('users.update',$user->id) }}" method="post">
+                        <form role="form" action="{{ route('users.update',$user->id) }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
@@ -62,6 +62,14 @@
                 <label for="roles">Roles</label>
                 {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}
             </div>
+                                    <div class="form-group">
+                                        Imagen
+                                        @if($user->image)
+                                            <img id="original" src="{{ url('images/'.$user->image) }}" height="200">
+                                        @endif
+                                        <input type="file" name="image" class="form-control" placeholder="">
+
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
