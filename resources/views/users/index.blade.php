@@ -43,7 +43,7 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>S.No</th>
+                                    <th>Nro.</th>
                                     <th>Nombre</th>
                                     <th>E-mail</th>
                                     <th>Roles</th>
@@ -59,20 +59,21 @@
                 <td>{{ $user->email }}</td>
                 <td>
 
-                    @if(!empty($user->getRoleNames()))
+                    @if(!empty($user->roles))
 
-                        @foreach($user->getRoleNames() as $v)
-                            <?php print_r($v);?>
-                            <label class="badge badge-success">{{ $v }}</label>
+                        @foreach($user->roles as $v)
+
+                            <label class="badge badge-success">{{ $v->name }}</label>
                         @endforeach
                     @endif
                 </td>
-                <td><a href="{{ route('users.edit',$user->id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>
-                <td>
+                @can('usuario-editar')<td><a href="{{ route('users.edit',$user->id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>@endcan
+                @can('usuario-eliminar')<td>
                     <form id="delete-form-{{ $user->id }}" method="post" action="{{ route('users.destroy',$user->id) }}" style="display: none">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                     </form>
+                    @endcan
                     <a href="" onclick="
                         if(confirm('Está seguro?'))
                         {
@@ -88,7 +89,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>S.No</th>
+                                    <th>Nro.</th>
                                     <th>Nombre</th>
                                     <th>Roles</th>
                                     <th>Editar</th>

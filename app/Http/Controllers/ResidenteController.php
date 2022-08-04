@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Residente;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use Illuminate\Support\Arr;
 
 
-class UserController extends Controller
+class ResidenteController extends Controller
 {
 
     /**
@@ -34,12 +34,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        /*$data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);*/
 
-        $users = User::all();
-        return view ('users.index',compact('users'));
+        $residentes = Residente::all();
+        return view ('residentes.index',compact('residentes'));
     }
 
     /**
@@ -49,8 +46,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
-        return view('users.create',compact('roles'));
+
+        return view('residentes.create');
     }
 
     /**
@@ -62,11 +59,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'roles' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'email' => 'required|email',
+
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
 
@@ -75,21 +72,21 @@ class UserController extends Controller
 
 
         $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
 
-        if ($files = $request->file('image')) {
-            $image = $request->file('image');
+
+        if ($files = $request->file('foto')) {
+            $image = $request->file('foto');
             $name = time().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
-            $input['image'] = "$name";
+            $input['foto'] = "$name";
         }
 
-        $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        $residente = Residente::create($input);
 
-        return redirect()->route('users.index')
-            ->with('success','Usuario creado con éxito');
+
+        return redirect()->route('residentes.index')
+            ->with('success','Residente creado con éxito');
     }
 
     /**
@@ -100,8 +97,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-        return view('users.show',compact('user'));
+        $residente = Residente::find($id);
+        return view('residentes.show',compact('residente'));
     }
 
     /**
@@ -112,11 +109,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $residente = Residente::find($id);
 
-        return view('users.edit',compact('user','roles','userRole'));
+
+        return view('residentes.edit',compact('residente'));
     }
 
     /**
@@ -129,36 +125,30 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'confirmed',
-            'roles' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'email' => 'required|email',
+
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $input = $request->all();
-        if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = Arr::except($input,array('password'));
-        }
 
-        if ($files = $request->file('image')) {
-            $image = $request->file('image');
+
+        if ($files = $request->file('foto')) {
+            $image = $request->file('foto');
             $name = time().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
-            $input['image'] = "$name";
+            $input['foto'] = "$name";
         }
 
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        $residente = Residente::find($id);
+        $residente->update($input);
 
-        $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')
-            ->with('success','Usuario modificado con éxito');
+        return redirect()->route('residentes.index')
+            ->with('success','Residente modificado con éxito');
     }
 
     /**
@@ -169,8 +159,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-            ->with('success','Usuario eliminado con éxito');
+        Residente::find($id)->delete();
+        return redirect()->route('residentes.index')
+            ->with('success','Residente eliminado con éxito');
     }
 }

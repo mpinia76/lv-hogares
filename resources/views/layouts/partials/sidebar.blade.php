@@ -5,7 +5,11 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
+            @if(Auth::user()->image)
           <img src="{{ url('/images/'.Auth::user()->image) }}" class="img-circle" alt="User Image">
+            @else
+                <img src="{{ url('/images/user.png') }}" class="img-circle" alt="User Image">
+            @endif
         </div>
         <div class="pull-left info">
           <p>{{ Auth::user()->name }}</p>
@@ -24,13 +28,20 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">SEGURIDAD</li>
+        @can('usuario-listar')<ul class="sidebar-menu" data-widget="tree">
+          <li class="header">SEGURIDAD</li>
 
-      <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-      <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
-          @can('edit-jugadors')<li><a href="{{ route('products.index') }}"><i class="fa fa-circle-o"></i> Productos</a></li>@endcan
-      </ul>
+          @can('usuario-listar')<li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>@endcan
+          @can('rol-listar')<li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>@endcan
+
+      </ul>@endcan
+        @can('usuario-listar')<ul class="sidebar-menu" data-widget="tree">
+            <li class="header">ADMINISTRACION</li>
+
+            @can('residente-listar')<li><a href="{{ route('residentes.index') }}"><i class="fa fa-circle-o"></i> Residentes</a></li>@endcan
+
+
+        </ul>@endcan
     </section>
     <!-- /.sidebar -->
   </aside>

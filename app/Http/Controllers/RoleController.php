@@ -18,10 +18,10 @@ class RoleController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:role-create', ['only' => ['create','store']]);
-        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:rol-listar|rol-crear|rol-editar|rol-eliminar', ['only' => ['index','store']]);
+        $this->middleware('permission:rol-crear', ['only' => ['create','store']]);
+        $this->middleware('permission:rol-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:rol-eliminar', ['only' => ['destroy']]);
     }
 
     /**
@@ -31,9 +31,12 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
+        /*$roles = Role::orderBy('id','DESC')->paginate(5);
         return view('roles.index',compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            ->with('i', ($request->input('page', 1) - 1) * 5);*/
+
+        $roles = Role::all();
+        return view ('roles.index',compact('roles'));
     }
 
     /**
@@ -64,7 +67,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')
-            ->with('success','Role created successfully');
+            ->with('success','Rol creado con éxito');
     }
     /**
      * Display the specified resource.
@@ -120,7 +123,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')
-            ->with('success','Role updated successfully');
+            ->with('success','Rol modificado con éxito');
     }
     /**
      * Remove the specified resource from storage.
@@ -132,6 +135,6 @@ class RoleController extends Controller
     {
         DB::table("roles")->where('id',$id)->delete();
         return redirect()->route('roles.index')
-            ->with('success','Role deleted successfully');
+            ->with('success','Rol eliminado con éxito');
     }
 }

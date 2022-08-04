@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Roles
+                <i class="fa fa-ticket" aria-hidden="true"></i>Residentes
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('users.index') }}">Roles</a></li>
+                <li><a href="{{ route('residentes.index') }}">Residentes</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -30,8 +30,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Rol</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('roles.create') }}">Nuevo</a>
+                            <h3 class="box-title">Residente</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('residentes.create') }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -41,45 +41,57 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-            <th>Nro.</th>
-            <th>Nombre</th>
+                                    <th>Nro.</th>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Ingreso</th>
                                     <th>Editar</th>
                                     <th>Eliminar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-        @foreach ($roles as $role)
-            <tr>
-                <td>{{ $loop->index + 1 }}</td>
-                <td>{{ $role->name }}</td>
-                <td>@can('rol-editar')<a href="{{ route('roles.edit',$role->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan</td>
-                <td>
+                                @foreach ($residentes as $residente)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>
+                                            @if($residente->foto)
+                                                <img id="original" class="imgCircle" src="{{ url('images/'.$residente->foto) }}" >
+                                            @else
+                                                <img id="original" class="imgCircle" src="{{ url('images/user.png') }}" >
+                                            @endif
+                                        </td>
+                                        <td>{{ $residente->persona->getFullNameAttribute() }}</td>
+                                        <td>{{($residente->nacimiento)?$residente->persona->getAgeAttribute():''}}</td>
+                                        <td>{{date('d/m/Y', strtotime($residente->ingreso))}}</td>
 
-                    @can('rol-eliminar')
-                    <form id="delete-form-{{ $role->id }}" method="post" action="{{ route('roles.destroy',$role->id) }}" style="display: none">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                    </form>
-                    @endcan
-                    <a href="" onclick="
-                        if(confirm('Está seguro?'))
-                        {
-                        event.preventDefault();
-                        document.getElementById('delete-form-{{ $role->id }}').submit();
-                        }
-                        else{
-                        event.preventDefault();
-                        }" ><span class="glyphicon glyphicon-trash"></span></a>
-                </td>
-
-            </tr>
-        @endforeach
+                                        @can('residente-editar')<td><a href="{{ route('residentes.edit',$residente->id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>@endcan
+                                        @can('residente-eliminar')<td>
+                                            <form id="delete-form-{{ $residente->id }}" method="post" action="{{ route('residentes.destroy',$residente->id) }}" style="display: none">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                            </form>
+                                            @endcan
+                                            <a href="" onclick="
+                                                if(confirm('Está seguro?'))
+                                                {
+                                                event.preventDefault();
+                                                document.getElementById('delete-form-{{ $residente->id }}').submit();
+                                                }
+                                                else{
+                                                event.preventDefault();
+                                                }" ><span class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
+                                    <th></th>
                                     <th>Nombre</th>
-
+                                    <th>Edad</th>
+                                    <th>Ingreso</th>
                                     <th>Editar</th>
                                     <th>Eliminar</th>
                                 </tr>
