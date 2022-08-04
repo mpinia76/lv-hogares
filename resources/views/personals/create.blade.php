@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Residente
+                Personal
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('users.index') }}">Residentes</a></li>
+                <li><a href="{{ route('users.index') }}">Personal</a></li>
                 <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
@@ -36,7 +36,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('residentes.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('personals.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 @include('includes.messages')
@@ -70,6 +70,12 @@
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
+                                            {{Form::label('cuil', 'Cuil')}}
+                                            {{Form::text('cuil', '', ['class' => 'form-control','placeholder'=>'Cuil'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
                                             <label for="genero">Género</label>
                                             {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], '',['class' => 'form-control']) }}
                                         </div>
@@ -80,12 +86,7 @@
                                             {{Form::email('email', '', ['class' => 'form-control','placeholder'=>'E-mail'])}}
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            <label for="telefono">Teléfono</label>
-                                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="telefono" value="{{ old('telefono') }}">
-                                        </div>
-                                    </div>
+
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             {{Form::label('domicilio', 'Domicilio')}}
@@ -94,6 +95,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="telefono">Teléfono</label>
+                                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="telefono" value="{{ old('telefono') }}">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
                                             {{Form::label('nacimiento', 'Nacimiento')}}
@@ -121,6 +128,21 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
+                                        {{Form::label('ocupacion', 'Ocupación')}}
+                                        {{Form::select('ocupacion_id', $ocupacions,'', ['class' => 'form-control'])}}
+
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
+
+                                        <div class="form-group">
+                                            {{Form::label('matricula', 'Matricula')}}
+                                            {{Form::text('matricula', '', ['class' => 'form-control','placeholder'=>'Matricula'])}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
                                     <div class="form-group">
                                         <label for="foto">Foto</label>
@@ -139,7 +161,7 @@
                                 </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('residentes.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('personals.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
                         </form>

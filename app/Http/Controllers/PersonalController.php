@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ocupacion;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 
-use App\Models\Residente;
+use App\Models\Personal;
 use Illuminate\Database\QueryException;
 
 
-class ResidenteController extends Controller
+class PersonalController extends Controller
 {
 
     /**
@@ -19,10 +20,10 @@ class ResidenteController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:residente-listar|residente-crear|residente-editar|residente-eliminar', ['only' => ['index','store']]);
-        $this->middleware('permission:residente-crear', ['only' => ['create','store']]);
-        $this->middleware('permission:residente-editar', ['only' => ['edit','update']]);
-        $this->middleware('permission:residente-eliminar', ['only' => ['destroy']]);
+        $this->middleware('permission:personal-listar|personal-crear|personal-editar|personal-eliminar', ['only' => ['index','store']]);
+        $this->middleware('permission:personal-crear', ['only' => ['create','store']]);
+        $this->middleware('permission:personal-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:personal-eliminar', ['only' => ['destroy']]);
     }
 
     /**
@@ -33,8 +34,9 @@ class ResidenteController extends Controller
     public function index(Request $request)
     {
 
-        $residentes = Residente::all();
-        return view ('residentes.index',compact('residentes'));
+        $personals = Personal::all();
+
+        return view ('personals.index',compact('personals'));
     }
 
     /**
@@ -45,7 +47,10 @@ class ResidenteController extends Controller
     public function create()
     {
 
-        return view('residentes.create');
+        $ocupacions=Ocupacion::orderBy('nombre','ASC')->get();
+        $ocupacions = $ocupacions->pluck('nombre', 'id')->prepend('','');
+
+        return view('personals.create',compact('ocupacions'));
     }
 
     /**
@@ -79,14 +84,14 @@ class ResidenteController extends Controller
 
         try {
             $persona = Persona::create($input);
-            $persona->residente()->create($input);
+            $persona->personal()->create($input);
         }catch(QueryException $ex){
 
             try {
                 $persona = Persona::where('documento','=',$input['documento'])->first();
                 if (!empty($persona)){
                     $persona->update($input);
-                    $persona->residente()->create($input);
+                    $persona->personal()->create($input);
 
                 }
             }catch(QueryException $ex){
@@ -99,8 +104,8 @@ class ResidenteController extends Controller
 
         }
 
-        return redirect()->route('residentes.index')
-            ->with('success','Residente creado con éxito');
+        return redirect()->route('personals.index')
+            ->with('success','Personal creado con éxito');
     }
 
     /**
@@ -111,8 +116,8 @@ class ResidenteController extends Controller
      */
     public function show($id)
     {
-        $residente = Residente::find($id);
-        return view('residentes.show',compact('residente'));
+        $personal = Personal::find($id);
+        return view('personals.show',compact('personal'));
     }
 
     /**
@@ -123,10 +128,11 @@ class ResidenteController extends Controller
      */
     public function edit($id)
     {
-        $residente = Residente::find($id);
+        $personal = Personal::find($id);
+        $ocupacions=Ocupacion::orderBy('nombre','ASC')->get();
+        $ocupacions = $ocupacions->pluck('nombre', 'id')->prepend('','');
 
-
-        return view('residentes.edit',compact('residente'));
+        return view('personals.edit',compact('personal','ocupacions'));
     }
 
     /**
@@ -158,8 +164,8 @@ class ResidenteController extends Controller
             $input['foto'] = "$name";
         }
 
-        $residente = Residente::find($id);
-        $residente->update($input);
+        $personal = Personal::find($id);
+        $personal->update($input);
 
         $update['nombre'] = $request->get('nombre');
         $update['apellido'] = $request->get('apellido');
@@ -175,10 +181,10 @@ class ResidenteController extends Controller
         $update['fallecimiento'] = $request->get('fallecimiento');
 
 
-        $residente->persona()->update($update);
+        $personal->persona()->update($update);
 
-        return redirect()->route('residentes.index')
-            ->with('success','Residente modificado con éxito');
+        return redirect()->route('personals.index')
+            ->with('success','Personal modificado con éxito');
     }
 
     /**
@@ -189,11 +195,11 @@ class ResidenteController extends Controller
      */
     public function destroy($id)
     {
-        //$residente=Residente::find($id);
+        //$personal=Personal::find($id);
 
-        Residente::find($id)->delete();
-        //Persona::find($residente->persona_id)->delete();
-        return redirect()->route('residentes.index')
-            ->with('success','Residente eliminado con éxito');
+        Personal::find($id)->delete();
+        //Persona::find($personal->persona_id)->delete();
+        return redirect()->route('personals.index')
+            ->with('success','Personal eliminado con éxito');
     }
 }

@@ -43,8 +43,8 @@
                                 <tr>
             <th>Nro.</th>
             <th>Nombre</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th>Acciones</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,8 +52,7 @@
             <tr>
                 <td>{{ $loop->index + 1 }}</td>
                 <td>{{ $role->name }}</td>
-                <td>@can('rol-editar')<a href="{{ route('roles.edit',$role->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan</td>
-                <td>
+                <td>@can('rol-editar')<a href="{{ route('roles.edit',$role->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
 
                     @can('rol-eliminar')
                     <form id="delete-form-{{ $role->id }}" method="post" action="{{ route('roles.destroy',$role->id) }}" style="display: none">
@@ -80,8 +79,8 @@
                                     <th>Nro.</th>
                                     <th>Nombre</th>
 
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th>Acciones</th>
+
                                 </tr>
                                 </tfoot>
                             </table>

@@ -7,20 +7,19 @@
 
 @endsection
 
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Residente
-                <small>Crear</small>
+                Personal
+                <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('users.index') }}">Residentes</a></li>
-                <!--<li class="active">Create Form</li>-->
+                <li><a href="{{ route('personals.index') }}">Personal</a></li>
+                <!--<li class="active">Edit Form</li>-->
             </ol>
         </section>
 
@@ -28,120 +27,140 @@
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
-
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Crear</h3>
+                            <h3 class="box-title">Editar</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('residentes.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('personals.update',$personal->id) }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
+                            {{ method_field('PUT') }}
                             <div class="box-body">
                                 @include('includes.messages')
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
                                         <div class="form-group">
-                                            <label for="nombre">Nombre</label>
-                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ old('nombre') }}">
+                                            {{Form::label('nombre', 'Nombre')}}
+                                            {{Form::text('nombre', $personal->persona->nombre, ['class' => 'form-control','placeholder'=>'Nombre'])}}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
-                                            <label for="apellido">Apellido</label>
-                                            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Nombre" value="{{ old('apellido') }}">
+                                            {{Form::label('apellido', 'Apellido')}}
+                                            {{Form::text('apellido', $personal->persona->apellido, ['class' => 'form-control','placeholder'=>'Apellido'])}}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
-                                            <label for="tipo">Tipo</label>
-                                            {{ Form::select('tipoDocumento',['DNI'=>'DNI','PAS'=>'Pasaporte','CI'=>'Cedula'], '',['class' => 'form-control']) }}
+                                            {{Form::label('tipoDocumento', 'Tipo')}}
+                                            {{ Form::select('tipoDocumento',['DNI'=>'DNI','PAS'=>'Pasaporte','CI'=>'Cedula'], $personal->persona->tipoDocumento,['class' => 'form-control']) }}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
                                             {{Form::label('documento', 'Documento')}}
-                                            {{Form::text('documento', '', ['class' => 'form-control','placeholder'=>'Documento'])}}
+                                            {{Form::text('documento', $personal->persona->documento, ['class' => 'form-control','placeholder'=>'Documento'])}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
+                                            {{Form::label('cuil', 'Cuil')}}
+                                            {{Form::text('cuil', $personal->persona->cuil, ['class' => 'form-control','placeholder'=>'Cuil'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
                                             <label for="genero">Género</label>
-                                            {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], '',['class' => 'form-control']) }}
+                                            {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], $personal->persona->genero,['class' => 'form-control']) }}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             {{Form::label('email', 'E-mail')}}
-                                            {{Form::email('email', '', ['class' => 'form-control','placeholder'=>'E-mail'])}}
+                                            {{Form::email('email', $personal->persona->email, ['class' => 'form-control','placeholder'=>'E-mail'])}}
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            <label for="telefono">Teléfono</label>
-                                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="telefono" value="{{ old('telefono') }}">
-                                        </div>
-                                    </div>
+
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             {{Form::label('domicilio', 'Domicilio')}}
-                                            {{Form::text('domicilio', '', ['class' => 'form-control','placeholder'=>'Domicilio'])}}
+                                            {{Form::text('domicilio', $personal->persona->domicilio, ['class' => 'form-control','placeholder'=>'Domicilio'])}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            {{Form::label('telefono', 'Teléfono')}}
+                                            {{Form::text('telefono', $personal->persona->telefono, ['class' => 'form-control','placeholder'=>'Telefono'])}}
+                                        </div>
+                                    </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
                                             {{Form::label('nacimiento', 'Nacimiento')}}
-                                            {{Form::date('nacimiento', '', ['class' => 'form-control'])}}
+                                            {{Form::date('nacimiento', ($personal->persona->nacimiento)?date('Y-m-d', strtotime($personal->persona->nacimiento)):'', ['class' => 'form-control'])}}
                                         </div>
                                     </div>
-                                    <!--<div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            {{Form::label('fallecimiento', 'Fallecimiento')}}
-                                            {{Form::date('fallecimiento', '', ['class' => 'form-control'])}}
-                                        </div>
-                                    </div>-->
+
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
                                             {{Form::label('ingreso', 'Ingreso')}}
-                                            {{Form::date('ingreso', '', ['class' => 'form-control'])}}
+                                            {{Form::date('ingreso', ($personal->ingreso)?date('Y-m-d', strtotime($personal->ingreso)):'', ['class' => 'form-control'])}}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
                                             {{Form::label('baja', 'Baja')}}
-                                            {{Form::date('baja', '', ['class' => 'form-control'])}}
+                                            {{Form::date('baja', ($personal->baja)?date('Y-m-d', strtotime($personal->baja)):'', ['class' => 'form-control'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
+                                        {{Form::label('ocupacion', 'Ocupación')}}
+                                        {{Form::select('ocupacion_id', $ocupacions,($personal->ocupacion)?$personal->ocupacion->id:'', ['class' => 'form-control'])}}
+
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
+
+                                        <div class="form-group">
+                                            {{Form::label('matricula', 'Matricula')}}
+                                            {{Form::text('matricula', $personal->baja, ['class' => 'form-control','placeholder'=>'Matricula'])}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
-                                    <div class="form-group">
-                                        <label for="foto">Foto</label>
-                                        <input type="file" name="foto" class="form-control" placeholder="">
+                                        <div class="form-group">
+                                            <label for="foto">Foto</label>
+                                            @if($personal->persona->foto)
+                                                <img id="original" src="{{ url('images/'.$personal->persona->foto) }}" height="200">
+                                            @endif
+                                            <input type="file" name="foto" class="form-control" placeholder="">
 
-                                    </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-8">
 
                                         <div class="form-group">
                                             {{Form::label('observaciones', 'Observaciones')}}
-                                            {{Form::textarea('observaciones', '', ['class' => 'form-control'])}}
+                                            {{Form::textarea('observaciones',  $personal->persona->observaciones, ['class' => 'form-control'])}}
 
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('residentes.index') }}' class="btn btn-warning">Volver</a>
-                                    </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href='{{ route('personals.index') }}' class="btn btn-warning">Volver</a>
                                 </div>
+                            </div>
+
                         </form>
                     </div>
                     <!-- /.box -->

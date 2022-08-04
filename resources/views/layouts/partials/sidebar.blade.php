@@ -31,17 +31,24 @@
         @can('usuario-listar')<ul class="sidebar-menu" data-widget="tree">
           <li class="header">SEGURIDAD</li>
 
-          @can('usuario-listar')<li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>@endcan
-          @can('rol-listar')<li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>@endcan
+          @can('usuario-listar')<li><a href="{{ route('users.index') }}"><i class="fa fa-user"></i> Usuarios</a></li>@endcan
+          @can('rol-listar')<li><a href="{{ route('roles.index') }}"><i class="fa fa-user-plus"></i> Roles</a></li>@endcan
 
       </ul>@endcan
-        @can('usuario-listar')<ul class="sidebar-menu" data-widget="tree">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">CONFIGURACION</li>
+            @can('ocupacion-listar')<li><a href="{{ route('ocupacions.index') }}"><i class="fa fa-list"></i>Ocupaciones</a></li>@endcan
+
+
+
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
             <li class="header">ADMINISTRACION</li>
+            @can('personal-listar')<li><a href="{{ route('personals.index') }}"><i class="fa fa-user-md"></i> Personal</a></li>@endcan
+            @can('residente-listar')<li><a href="{{ route('residentes.index') }}"><i class="fa fa-users"></i> Residentes</a></li>@endcan
 
-            @can('residente-listar')<li><a href="{{ route('residentes.index') }}"><i class="fa fa-circle-o"></i> Residentes</a></li>@endcan
 
-
-        </ul>@endcan
+        </ul>
     </section>
     <!-- /.sidebar -->
   </aside>

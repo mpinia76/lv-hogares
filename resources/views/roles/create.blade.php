@@ -46,12 +46,14 @@
 
             <div class="form-group">
                 <strong>Permisos:</strong>
-                <br/>
+                <div class="row">
                 @foreach($permission as $value)
-                    <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+                        <div class="col-md-3">
+                        <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
                         {{ $value->name }}</label>
-                    <br/>
+                        </div>
                 @endforeach
+                </div>
             </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>

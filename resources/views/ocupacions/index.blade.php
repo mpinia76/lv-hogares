@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('headSection')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.css') }}">
@@ -8,18 +9,19 @@
 
 @endsection
 
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Residentes
+                <i class="fa fa-ticket" aria-hidden="true"></i>Ocupaciones
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('residentes.index') }}">Residentes</a></li>
+                <li><a href="{{ route('ocupacions.index') }}">Ocupaciones</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -30,8 +32,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Residente</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('residentes.create') }}">Nuevo</a>
+                            <h3 class="box-title">Ocupación</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('ocupacions.create') }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -42,58 +44,43 @@
                                 <thead>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th></th>
                                     <th>Nombre</th>
-                                    <th>Edad</th>
-                                    <th>Ingreso</th>
-                                    <th>Acciones</th>
 
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($residentes as $residente)
-                                    <tr>
-                                        <td>{{ $loop->index + 1 }}</td>
-                                        <td>
-                                            @if($residente->persona->foto)
-                                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
-                                            @else
-                                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
-                                            @endif
-                                        </td>
-                                        <td>{{ $residente->persona->getFullNameAttribute() }}</td>
-                                        <td>{{($residente->persona->nacimiento)?$residente->persona->getAgeAttribute():''}}</td>
-                                        <td>{{date('d/m/Y', strtotime($residente->ingreso))}}</td>
+        @foreach ($ocupacions as $ocupacion)
+            <tr>
+                <td>{{ $loop->index + 1 }}</td>
+                <td>{{ $ocupacion->nombre }}</td>
 
-                                        <td>@can('residente-editar')<a href="{{ route('residentes.edit',$residente->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
-                                        @can('residente-eliminar')
-                                            <form id="delete-form-{{ $residente->id }}" method="post" action="{{ route('residentes.destroy',$residente->id) }}" style="display: none">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                            </form>
-                                            @endcan
-                                            <a href="" onclick="
-                                                if(confirm('Está seguro?'))
-                                                {
-                                                event.preventDefault();
-                                                document.getElementById('delete-form-{{ $residente->id }}').submit();
-                                                }
-                                                else{
-                                                event.preventDefault();
-                                                }" ><span class="glyphicon glyphicon-trash"></span></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                <td>@can('ocupacion-editar')<a href="{{ route('ocupacions.edit',$ocupacion->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                @can('ocupacion-eliminar')
+                    <form id="delete-form-{{ $ocupacion->id }}" method="post" action="{{ route('ocupacions.destroy',$ocupacion->id) }}" style="display: none">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                    </form>
+                    @endcan
+                    <a href="" onclick="
+                        if(confirm('Está seguro?'))
+                        {
+                        event.preventDefault();
+                        document.getElementById('delete-form-{{ $ocupacion->id }}').submit();
+                        }
+                        else{
+                        event.preventDefault();
+                        }" ><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        @endforeach
                                 </tbody>
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th></th>
                                     <th>Nombre</th>
-                                    <th>Edad</th>
-                                    <th>Ingreso</th>
-                                    <th>Acciones</th>
 
+                                    <th>Acciones</th>
                                 </tr>
                                 </tfoot>
                             </table>

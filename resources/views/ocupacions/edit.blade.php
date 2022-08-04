@@ -13,12 +13,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Rol
+                Ocupación
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('roles.index') }}">Roles</a></li>
+                <li><a href="{{ route('ocupacions.index') }}">Ocupaciones</a></li>
                 <!--<li class="active">Edit Form</li>-->
             </ol>
         </section>
@@ -34,45 +34,24 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('roles.update',$role->id) }}" method="post" >
+                        <form role="form" action="{{ route('ocupacions.update',$ocupacion->id) }}" method="post">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
                                     @include('includes.messages')
                                     <div class="form-group">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="@if (old('name')){{ old('name') }}@else{{ $role->name }}@endif">
+                                        <label for="nombre">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $ocupacion->nombre }}@endif">
                                     </div>
 
-            <div class="form-group">
-                <label for="permisos">Permisos</label>
-
-                <div class="row">
-
-                @foreach ($permission as $value)
-
-                        <div class="col-md-3">
-                            <label><input class="name" type="checkbox" name="permission[]" value="{{ $value->id }}"
-                                          @foreach ($role->permissions as $role_permit)
-                                          @if ($role_permit->id == $value->id)
-                                          checked
-                                    @endif
-                                    @endforeach
-                                >{{ $value->name }}</label>
-                        </div>
-
-
-                @endforeach
-
-                </div>
-            </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('roles.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('ocupacions.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
-    </div>
+                                </div>
+
                             </div>
 
                         </form>

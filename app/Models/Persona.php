@@ -14,7 +14,12 @@ class Persona extends Model
 
     public function residente()
     {
-        return $this->hasOne('App\Residente');
+        return $this->hasOne('App\Models\Residente');
+    }
+
+    public function personal()
+    {
+        return $this->hasOne('App\Models\Personal');
     }
 
     public function getFullNameAttribute()
