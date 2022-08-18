@@ -22,6 +22,11 @@ class Persona extends Model
         return $this->hasOne('App\Models\Personal');
     }
 
+    public function familiar()
+    {
+        return $this->hasOne('App\Models\Familiar');
+    }
+
     public function getFullNameAttribute()
     {
         return $this->apellido . ', ' . $this->nombre;

@@ -30,7 +30,7 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Residente</h3>
+                            <h3 class="box-title">Residentes</h3>
                             <a class='pull-right btn btn-success' href="{{ route('residentes.create') }}">Nuevo</a>
                         </div>
                         @include('includes.messages')

@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Residente extends Model
+class Familiar extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['persona_id','ingreso','baja'];
+    protected $fillable = ['persona_id'];
 
     public function persona() {
         return $this->belongsTo('App\Models\Persona');
     }
 
-    public function familiar() {
-        return $this->belongsToMany('App\Models\Familiar');
+    public function residente() {
+        return $this->belongsToMany('App\Models\Residente');
     }
+
+
 }
