@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Residente
+                Familiar de {{ $residente->persona->getFullNameAttribute() }}
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('residentes.index') }}">Residentes</a></li>
+                <li><a href="{{ route('familiars.index', array('residenteId' =>$residente->id))  }}">Familiares</a></li>
                 <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
@@ -36,10 +36,11 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('residentes.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('familiars.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 @include('includes.messages')
+                                {{Form::hidden('idResidente',$residente->id)}}
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
@@ -100,46 +101,18 @@
                                             {{Form::date('nacimiento', '', ['class' => 'form-control'])}}
                                         </div>
                                     </div>
-                                    <!--<div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            {{Form::label('fallecimiento', 'Fallecimiento')}}
-                                            {{Form::date('fallecimiento', '', ['class' => 'form-control'])}}
-                                        </div>
-                                    </div>-->
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
-                                            {{Form::label('ingreso', 'Ingreso')}}
-                                            {{Form::date('ingreso', '', ['class' => 'form-control'])}}
+                                            <label for="nombre">Parentesco</label>
+                                            <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="{{ old('parentesco') }}">
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            {{Form::label('baja', 'Baja')}}
-                                            {{Form::date('baja', '', ['class' => 'form-control'])}}
-                                        </div>
-                                    </div>
+
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
-                                    <div class="form-group">
-                                        <label for="foto">Foto</label>
-                                        <input type="file" name="foto" class="form-control" placeholder="">
-
-                                    </div>
-                                    </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-8">
-
-                                        <div class="form-group">
-                                            {{Form::label('observaciones', 'Observaciones')}}
-                                            {{Form::textarea('observaciones', '', ['class' => 'form-control'])}}
-
-                                        </div>
-                                    </div>
-                                </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('residentes.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('familiars.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
                         </form>

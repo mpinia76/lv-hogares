@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\OcupacionController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\FamiliarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('residentes', ResidenteController::class);
     Route::resource('ocupacions', OcupacionController::class);
     Route::resource('personals', PersonalController::class);
+    Route::resource('familiars', FamiliarController::class);
 });

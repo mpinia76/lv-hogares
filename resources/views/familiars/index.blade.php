@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Residentes
+                <i class="fa fa-ticket" aria-hidden="true"></i>Familiares de {{ $residente->persona->getFullNameAttribute() }}
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('residentes.index') }}">Residentes</a></li>
+                <li><a href="{{ route('familiars.index') }}">Familiares</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -30,8 +30,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Residentes</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('residentes.create') }}">Nuevo</a>
+                            <h3 class="box-title">Familiares</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('familiars.create', array('residenteId' =>$residente->id)) }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -42,32 +42,27 @@
                                 <thead>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th></th>
+
                                     <th>Nombre</th>
-                                    <th>Edad</th>
-                                    <th>Ingreso</th>
+                                    <th>Teléfono</th>
+                                    <th>Parentesco</th>
                                     <th>Acciones</th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($residentes as $residente)
+                                @foreach ($residente->familiars as $familiar)
+
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td>
-                                            @if($residente->persona->foto)
-                                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
-                                            @else
-                                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
-                                            @endif
-                                        </td>
-                                        <td>{{ $residente->persona->getFullNameAttribute() }}</td>
-                                        <td>{{($residente->persona->nacimiento)?$residente->persona->getAgeAttribute():''}}</td>
-                                        <td>{{date('d/m/Y', strtotime($residente->ingreso))}}</td>
 
-                                        <td>@can('residente-editar')<a title="editar" href="{{ route('residentes.edit',$residente->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
-                                        @can('residente-eliminar')
-                                            <form id="delete-form-{{ $residente->id }}" method="post" action="{{ route('residentes.destroy',$residente->id) }}" style="display: none">
+                                        <td>{{ $familiar->persona->getFullNameAttribute() }}</td>
+                                        <td>{{$familiar->persona->telefono}}</td>
+                                        <td>{{$familiar->pivot->parentesco}}</td>
+
+                                        <td>@can('familiar-editar')<a title="editar" href="{{ route('familiars.edit',array($residente->id,'idFamiliar'=>$familiar->id)) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                                        @can('familiar-eliminar')
+                                            <form id="delete-form-{{ $familiar->id }}" method="post" action="{{ route('familiars.destroy',$familiar->id) }}" style="display: none">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                             </form>
@@ -76,12 +71,12 @@
                                                 if(confirm('Está seguro?'))
                                                 {
                                                 event.preventDefault();
-                                                document.getElementById('delete-form-{{ $residente->id }}').submit();
+                                                document.getElementById('delete-form-{{ $familiar->id }}').submit();
                                                 }
                                                 else{
                                                 event.preventDefault();
                                                 }" ><span class="glyphicon glyphicon-trash"></span></a>
-                                            @can('familiar-listar')<a title="familiares" href="{{ route('familiars.index', array('residenteId' =>$residente->id)) }}"><span class="glyphicon glyphicon-user"></span></a>@endcan
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -89,10 +84,9 @@
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th></th>
                                     <th>Nombre</th>
-                                    <th>Edad</th>
-                                    <th>Ingreso</th>
+                                    <th>Teléfono</th>
+                                    <th>Parentesco</th>
                                     <th>Acciones</th>
 
                                 </tr>
