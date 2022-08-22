@@ -9,6 +9,7 @@ use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\OcupacionController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\FamiliarController;
+use App\Http\Controllers\PersonaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('personals', PersonalController::class);
     Route::resource('familiars', FamiliarController::class);
 });
+
+Route::get('search', [PersonaController::class, 'autosearch'])->name('search');
+
+

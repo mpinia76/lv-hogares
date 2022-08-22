@@ -62,7 +62,7 @@
 
                                         <td>@can('familiar-editar')<a title="editar" href="{{ route('familiars.edit',array($residente->id,'idFamiliar'=>$familiar->id)) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
                                         @can('familiar-eliminar')
-                                            <form id="delete-form-{{ $familiar->id }}" method="post" action="{{ route('familiars.destroy',$familiar->id) }}" style="display: none">
+                                            <form id="delete-form-{{ $familiar->id }}" method="post" action="{{ route('familiars.destroy',array($residente->id,'idFamiliar'=>$familiar->id)) }}" style="display: none">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                             </form>

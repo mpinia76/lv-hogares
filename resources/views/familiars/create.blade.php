@@ -36,12 +36,25 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('familiars.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('familiars.store') }}" method="post">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 @include('includes.messages')
                                 {{Form::hidden('idResidente',$residente->id)}}
                                 <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="tipo">Tipo</label>
+                                            {{ Form::select('tipoDocumento',['DNI'=>'DNI','PAS'=>'Pasaporte','CI'=>'Cedula'], '',['class' => 'form-control','id'=>'tipoDocumento']) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            {{Form::label('documento', 'Documento')}}
+                                            {{Form::text('documento', '', ['class' => 'form-control','placeholder'=>'Documento'])}}
+                                        </div>
+
+                                    </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
                                         <div class="form-group">
@@ -55,24 +68,13 @@
                                             <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Nombre" value="{{ old('apellido') }}">
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            <label for="tipo">Tipo</label>
-                                            {{ Form::select('tipoDocumento',['DNI'=>'DNI','PAS'=>'Pasaporte','CI'=>'Cedula'], '',['class' => 'form-control']) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            {{Form::label('documento', 'Documento')}}
-                                            {{Form::text('documento', '', ['class' => 'form-control','placeholder'=>'Documento'])}}
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
                                             <label for="genero">Género</label>
-                                            {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], '',['class' => 'form-control']) }}
+                                            {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], '',['class' => 'form-control','id'=>'genero']) }}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
@@ -112,7 +114,7 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('familiars.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('familiars.index', array('residenteId' =>$residente->id)) }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
                         </form>
@@ -130,6 +132,7 @@
     <!-- /.content-wrapper -->
 @endsection
 @section('footerSection')
+
     <!-- jQuery 3 -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
@@ -145,5 +148,54 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- page script -->
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function(){
+
+            $( "#documento" ).autocomplete({
+                source: function( request, response ) {
+                    // Fetch data
+                    $.ajax({
+                        url:"{{route('search')}}",
+                        type: 'get',
+                        dataType: "json",
+                        data: {
+                            _token: CSRF_TOKEN,
+                            search: request.term
+                        },
+                        success: function( data ) {
+                            response( data );
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    // Set selection
+                    $('#documento').val(ui.item.documento); // display the selected text
+                    $('#tipoDocumento').val(ui.item.tipoDocumento);
+                    $('#nombre').val(ui.item.nombre);
+                    $('#apellido').val(ui.item.apellido);
+
+                    $("#genero").val(ui.item.genero);
+                    $("#email").val(ui.item.email);
+                    $("#domicilio").val(ui.item.domicilio);
+                    $("#nacimiento").val(ui.item.nacimiento);
+
+                    return false;
+                }
+            });
+
+        });
+    </script>
+
 
 @endsection

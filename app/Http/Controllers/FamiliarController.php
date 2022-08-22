@@ -118,11 +118,94 @@ class FamiliarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id, Request $request)
     {
-        $residente = Residente::find($id);
+        //print_r($request);
+        $idResidente = $id;
+        $idFamiliar = $request->get('idFamiliar');
+        $residente = Residente::find($idResidente);
+        $familiar = Familiar::find($idFamiliar);
+        $residenteFamiliar = $residente->familiars()->find($idFamiliar);
+        //$parentesco = $residenteFamiliar->pivot->parentesco;
 
-
-        return view('residentes.edit',compact('residente'));
+        return view('familiars.edit',compact('residente','familiar','residenteFamiliar'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'email' => 'nullable|email',
+            'documento' => 'required'
+        ]);
+
+
+        $input = $request->all();
+
+
+        DB::beginTransaction();
+        try {
+            $familiar = Familiar::find($request->get('idFamiliar'));
+            $familiar->update($input);
+
+            $update['nombre'] = $request->get('nombre');
+            $update['apellido'] = $request->get('apellido');
+            $update['email'] = $request->get('email');
+            $update['telefono'] = $request->get('telefono');
+            $update['domicilio'] = $request->get('domicilio');
+            $update['genero'] = $request->get('genero');
+
+
+            $update['tipoDocumento'] = $request->get('tipoDocumento');
+            $update['documento'] = $request->get('documento');
+            $update['nacimiento'] = $request->get('nacimiento');
+
+
+
+            $familiar->persona()->update($update);
+
+            $idResidente = $request->get('idResidente');
+            $residente = Residente::find($idResidente);
+            $residente->familiars()->updateExistingPivot($id, ['parentesco'=> $request->get('parentesco')]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+
+
+
+        return redirect()->route('familiars.index',array('residenteId' =>$residente->id))
+            ->with('success','Familiar modificado con éxito');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id, Request $request)
+    {
+
+        $idResidente = $id;
+        $idFamiliar = $request->get('idFamiliar');
+        $residente = Residente::find($idResidente);
+
+        $residente->familiars()->detach($idFamiliar);
+
+
+
+        return redirect()->route('familiars.index', array('residenteId' =>$idResidente))
+            ->with('success','Familiar eliminado con éxito');
+    }
+
+
 }

@@ -17,6 +17,6 @@ class Residente extends Model
 
     public function familiars() {
 
-        return $this->belongsToMany('App\Models\Familiar', 'residente_familiar')->withPivot('parentesco');
+        return $this->belongsToMany('App\Models\Familiar', 'residente_familiars')->withPivot('parentesco');
     }
 }
