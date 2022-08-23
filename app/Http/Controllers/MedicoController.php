@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especialidad;
 use App\Models\Persona;
 use App\Models\Residente;
-use App\Models\ResidenteFamiliar;
+use App\Models\ResidenteMedico;
 use Illuminate\Http\Request;
 
-use App\Models\Familiar;
+use App\Models\Medico;
 use Illuminate\Database\QueryException;
 use DB;
 
-class FamiliarController extends Controller
+class MedicoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +21,10 @@ class FamiliarController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:familiar-listar|familiar-crear|familiar-editar|familiar-eliminar', ['only' => ['index','store']]);
-        $this->middleware('permission:familiar-crear', ['only' => ['create','store']]);
-        $this->middleware('permission:familiar-editar', ['only' => ['edit','update']]);
-        $this->middleware('permission:familiar-eliminar', ['only' => ['destroy']]);
+        $this->middleware('permission:medico-listar|medico-crear|medico-editar|medico-eliminar', ['only' => ['index','store']]);
+        $this->middleware('permission:medico-crear', ['only' => ['create','store']]);
+        $this->middleware('permission:medico-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:medico-eliminar', ['only' => ['destroy']]);
     }
 
     /**
@@ -36,9 +37,9 @@ class FamiliarController extends Controller
         $idResidente = $request->get('residenteId');
         $residente = Residente::find($idResidente);
 
-        //$residente = Residente::with('familiars')->where('id', '=', $idResidente)->get();
+        //$residente = Residente::with('medicos')->where('id', '=', $idResidente)->get();
 
-        return view ('familiars.index',compact('residente'));
+        return view ('medicos.index',compact('residente'));
     }
 
     /**
@@ -50,7 +51,9 @@ class FamiliarController extends Controller
     {
         $idResidente = $request->get('residenteId');
         $residente = Residente::find($idResidente);
-        return view('familiars.create',compact('residente'));
+        $especialidads=Especialidad::orderBy('nombre','ASC')->get();
+        $especialidads = $especialidads->pluck('nombre', 'id')->prepend('','');
+        return view('medicos.create',compact('residente','especialidads'));
     }
 
     /**
@@ -76,60 +79,60 @@ class FamiliarController extends Controller
         DB::beginTransaction();
         $ok=1;
 
+        try {
+            $persona = Persona::create($input);
+
+        }catch(QueryException $ex){
+
             try {
-                $persona = Persona::create($input);
+                $persona = Persona::where('documento','=',$input['documento'])->first();
+                if (!empty($persona)){
+                    $persona->update($input);
+
+
+                }
+            }catch(QueryException $ex){
+
+                $error=$ex->getMessage();
+                $ok=0;
+            }
+
+
+        }
+        try {
+            $medico=$persona->medico()->create($input);
+
+
+
+        }catch(QueryException $ex){
+            try {
+                $medico = Medico::where('persona_id','=',$persona->id)->first();
 
             }catch(QueryException $ex){
 
-                try {
-                    $persona = Persona::where('documento','=',$input['documento'])->first();
-                    if (!empty($persona)){
-                        $persona->update($input);
-
-
-                    }
-                }catch(QueryException $ex){
-
+                $errorCode = $ex->errorInfo[1];
+                if($errorCode == 1062){
+                    $error='El medico ya está cargado al residente';
+                }
+                else{
                     $error=$ex->getMessage();
-                    $ok=0;
                 }
 
-
+                $ok=0;
             }
-            try {
-                $familiar=$persona->familiar()->create($input);
 
 
 
-            }catch(QueryException $ex){
-                try {
-                    $familiar = Familiar::where('persona_id','=',$persona->id)->first();
-
-                }catch(QueryException $ex){
-
-                    $errorCode = $ex->errorInfo[1];
-                    if($errorCode == 1062){
-                        $error='El familiar ya está cargado al residente';
-                    }
-                    else{
-                        $error=$ex->getMessage();
-                    }
-
-                    $ok=0;
-                }
-
-
-
-            }
+        }
 
 
 
 
         if ($ok){
-            $residente->familiars()->attach($familiar, ['parentesco'=> $request->get('parentesco')]);
+            $residente->medicos()->attach($medico);
             DB::commit();
             $respuestaID='success';
-            $respuestaMSJ='Familiar creado con éxito';
+            $respuestaMSJ='Médico creado con éxito';
         }
         else{
             DB::rollback();
@@ -138,7 +141,7 @@ class FamiliarController extends Controller
         }
 
 
-        return redirect()->route('familiars.index',array('residenteId' =>$residente->id))
+        return redirect()->route('medicos.index',array('residenteId' =>$residente->id))
             ->with($respuestaID,$respuestaMSJ);
     }
 
@@ -153,13 +156,15 @@ class FamiliarController extends Controller
     {
         //print_r($request);
         $idResidente = $id;
-        $idFamiliar = $request->get('idFamiliar');
+        $idMedico = $request->get('idMedico');
         $residente = Residente::find($idResidente);
-        $familiar = Familiar::find($idFamiliar);
-        $residenteFamiliar = $residente->familiars()->find($idFamiliar);
-        //$parentesco = $residenteFamiliar->pivot->parentesco;
+        $medico = Medico::find($idMedico);
+        $residenteMedico = $residente->medicos()->find($idMedico);
 
-        return view('familiars.edit',compact('residente','familiar','residenteFamiliar'));
+        $especialidads=Especialidad::orderBy('nombre','ASC')->get();
+        $especialidads = $especialidads->pluck('nombre', 'id')->prepend('','');
+
+        return view('medicos.edit',compact('residente','medico','residenteMedico','especialidads'));
     }
 
     /**
@@ -184,28 +189,28 @@ class FamiliarController extends Controller
         DB::beginTransaction();
         $ok=1;
         try {
-            $familiar = Familiar::find($request->get('idFamiliar'));
-            $familiar->update($input);
+            $medico = Medico::find($request->get('idMedico'));
+            $medico->update($input);
 
             $update['nombre'] = $request->get('nombre');
             $update['apellido'] = $request->get('apellido');
             $update['email'] = $request->get('email');
             $update['telefono'] = $request->get('telefono');
             $update['domicilio'] = $request->get('domicilio');
-            $update['genero'] = $request->get('genero');
+
 
 
             $update['tipoDocumento'] = $request->get('tipoDocumento');
             $update['documento'] = $request->get('documento');
-            $update['nacimiento'] = $request->get('nacimiento');
 
 
 
-            $familiar->persona()->update($update);
+
+            $medico->persona()->update($update);
 
             $idResidente = $request->get('idResidente');
             $residente = Residente::find($idResidente);
-            $residente->familiars()->updateExistingPivot($id, ['parentesco'=> $request->get('parentesco')]);
+            //$residente->medicos()->updateExistingPivot($id, ['default'=>0]);
 
         } catch (\Exception $e) {
             $error=$e->getMessage();
@@ -215,7 +220,7 @@ class FamiliarController extends Controller
         if ($ok){
             DB::commit();
             $respuestaID='success';
-            $respuestaMSJ='Familiar modificado con éxito';
+            $respuestaMSJ='Médico modificado con éxito';
         }
         else{
             DB::rollback();
@@ -223,7 +228,7 @@ class FamiliarController extends Controller
             $respuestaMSJ=$error;
         }
 
-        return redirect()->route('familiars.index',array('residenteId' =>$residente->id))
+        return redirect()->route('medicos.index',array('residenteId' =>$residente->id))
             ->with($respuestaID,$respuestaMSJ);
     }
 
@@ -237,15 +242,15 @@ class FamiliarController extends Controller
     {
 
         $idResidente = $id;
-        $idFamiliar = $request->get('idFamiliar');
+        $idMedico = $request->get('idMedico');
         $residente = Residente::find($idResidente);
 
-        $residente->familiars()->detach($idFamiliar);
+        $residente->medicos()->detach($idMedico);
 
 
 
-        return redirect()->route('familiars.index', array('residenteId' =>$idResidente))
-            ->with('success','Familiar eliminado con éxito');
+        return redirect()->route('medicos.index', array('residenteId' =>$idResidente))
+            ->with('success','Médico eliminado con éxito');
     }
 
 

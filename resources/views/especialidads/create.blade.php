@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Ocupación
+                Especialidad
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('ocupacions.index') }}">Ocupaciones</a></li>
+                <li><a href="{{ route('especialidads.index') }}">Especialidades</a></li>
                 <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
@@ -35,7 +35,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('ocupacions.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('especialidads.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
@@ -47,7 +47,7 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('ocupacions.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('especialidads.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
     </div>
                         </form>

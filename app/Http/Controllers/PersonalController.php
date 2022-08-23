@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Personal;
 use Illuminate\Database\QueryException;
+use DB;
 
 
 class PersonalController extends Controller
@@ -81,7 +82,8 @@ class PersonalController extends Controller
             $input['foto'] = "$name";
         }
 
-
+        DB::beginTransaction();
+        $ok=1;
         try {
             $persona = Persona::create($input);
             $persona->personal()->create($input);
@@ -96,16 +98,27 @@ class PersonalController extends Controller
                 }
             }catch(QueryException $ex){
 
-                $respuestaID='error';
-                $respuestaMSJ=$ex->getMessage();
+                $error=$ex->getMessage();
+                $ok=0;
 
             }
 
 
         }
 
+        if ($ok){
+            DB::commit();
+            $respuestaID='success';
+            $respuestaMSJ='Personal creado con éxito';
+        }
+        else{
+            DB::rollback();
+            $respuestaID='error';
+            $respuestaMSJ=$error;
+        }
+
         return redirect()->route('personals.index')
-            ->with('success','Personal creado con éxito');
+            ->with($respuestaID,$respuestaMSJ);
     }
 
     /**
@@ -165,26 +178,47 @@ class PersonalController extends Controller
         }
 
         $personal = Personal::find($id);
-        $personal->update($input);
 
-        $update['nombre'] = $request->get('nombre');
-        $update['apellido'] = $request->get('apellido');
-        $update['email'] = $request->get('email');
-        $update['telefono'] = $request->get('telefono');
-        $update['domicilio'] = $request->get('domicilio');
-        $update['genero'] = $request->get('genero');
-        $update['foto'] = $input['foto'];
-        $update['observaciones'] = $request->get('observaciones');
-        $update['tipoDocumento'] = $request->get('tipoDocumento');
-        $update['documento'] = $request->get('documento');
-        $update['nacimiento'] = $request->get('nacimiento');
-        $update['fallecimiento'] = $request->get('fallecimiento');
+        DB::beginTransaction();
+        $ok=1;
+        try {
+            $personal->update($input);
+
+            $update['nombre'] = $request->get('nombre');
+            $update['apellido'] = $request->get('apellido');
+            $update['email'] = $request->get('email');
+            $update['telefono'] = $request->get('telefono');
+            $update['domicilio'] = $request->get('domicilio');
+            $update['genero'] = $request->get('genero');
+            $update['foto'] = $input['foto'];
+            $update['observaciones'] = $request->get('observaciones');
+            $update['tipoDocumento'] = $request->get('tipoDocumento');
+            $update['documento'] = $request->get('documento');
+            $update['nacimiento'] = $request->get('nacimiento');
+            $update['fallecimiento'] = $request->get('fallecimiento');
 
 
-        $personal->persona()->update($update);
+            $personal->persona()->update($update);
+        }catch(QueryException $ex){
+
+            $error=$ex->getMessage();
+            $ok=0;
+
+        }
+
+        if ($ok){
+            DB::commit();
+            $respuestaID='success';
+            $respuestaMSJ='Personal modificado con éxito';
+        }
+        else{
+            DB::rollback();
+            $respuestaID='error';
+            $respuestaMSJ=$error;
+        }
 
         return redirect()->route('personals.index')
-            ->with('success','Personal modificado con éxito');
+            ->with($respuestaID,$respuestaMSJ);
     }
 
     /**

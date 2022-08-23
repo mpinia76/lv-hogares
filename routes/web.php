@@ -10,6 +10,8 @@ use App\Http\Controllers\OcupacionController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\FamiliarController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\MedicoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('ocupacions', OcupacionController::class);
     Route::resource('personals', PersonalController::class);
     Route::resource('familiars', FamiliarController::class);
+    Route::resource('especialidads', EspecialidadController::class);
+    Route::resource('medicos', MedicoController::class);
 });
 
 Route::get('search', [PersonaController::class, 'autosearch'])->name('search');

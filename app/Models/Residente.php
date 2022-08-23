@@ -19,4 +19,9 @@ class Residente extends Model
 
         return $this->belongsToMany('App\Models\Familiar', 'residente_familiars')->withPivot('parentesco');
     }
+
+    public function medicos() {
+
+        return $this->belongsToMany('App\Models\Medico', 'residente_medicos');
+    }
 }

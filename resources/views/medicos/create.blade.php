@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Familiar de {{ $residente->persona->getFullNameAttribute() }}
+                Médico de {{ $residente->persona->getFullNameAttribute() }}
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('familiars.index', array('residenteId' =>$residente->id))  }}">Familiares</a></li>
+                <li><a href="{{ route('medicos.index', array('residenteId' =>$residente->id))  }}">Médicos</a></li>
                 <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
@@ -36,7 +36,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('familiars.store') }}" method="post">
+                        <form role="form" action="{{ route('medicos.store') }}" method="post">
                             {{ csrf_field() }}
                             <div class="box-body">
                                 @include('includes.messages')
@@ -71,12 +71,7 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            <label for="genero">Género</label>
-                                            {{ Form::select('genero',[''=>'','M'=>'M','F'=>'F','X'=>'X'], '',['class' => 'form-control','id'=>'genero']) }}
-                                        </div>
-                                    </div>
+
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             {{Form::label('email', 'E-mail')}}
@@ -89,32 +84,25 @@
                                             <input type="text" class="form-control" id="telefono" name="telefono" placeholder="telefono" value="{{ old('telefono') }}">
                                         </div>
                                     </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            {{Form::label('matricula', 'Matrícula')}}
+                                            {{Form::text('matricula', '', ['class' => 'form-control','placeholder'=>'Matrícula'])}}
+                                        </div>
+                                    </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
-                                            {{Form::label('domicilio', 'Domicilio')}}
-                                            {{Form::text('domicilio', '', ['class' => 'form-control','placeholder'=>'Domicilio'])}}
+                                            {{Form::label('especialidad', 'Especialidad')}}
+                                            {{Form::select('especialidad_id', $especialidads,'', ['class' => 'form-control'])}}
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            {{Form::label('nacimiento', 'Nacimiento')}}
-                                            {{Form::date('nacimiento', '', ['class' => 'form-control'])}}
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            <label for="nombre">Parentesco</label>
-                                            <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="{{ old('parentesco') }}">
-                                        </div>
-                                    </div>
 
+                                    </div>
                                 </div>
+
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('familiars.index', array('residenteId' =>$residente->id)) }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('medicos.index', array('residenteId' =>$residente->id)) }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
                         </form>
@@ -185,10 +173,9 @@
                     $('#nombre').val(ui.item.nombre);
                     $('#apellido').val(ui.item.apellido);
 
-                    $("#genero").val(ui.item.genero);
+
                     $("#email").val(ui.item.email);
-                    $("#domicilio").val(ui.item.domicilio);
-                    $("#nacimiento").val(ui.item.nacimiento);
+
 
 
                     return false;

@@ -135,8 +135,8 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
                                         <div class="form-group">
-                                            {{Form::label('matricula', 'Matricula')}}
-                                            {{Form::text('matricula', '', ['class' => 'form-control','placeholder'=>'Matricula'])}}
+                                            {{Form::label('matricula', 'Matrícula')}}
+                                            {{Form::text('matricula', '', ['class' => 'form-control','placeholder'=>'Matrícula'])}}
                                         </div>
                                     </div>
                                 </div>

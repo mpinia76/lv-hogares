@@ -27,6 +27,11 @@ class Persona extends Model
         return $this->hasOne('App\Models\Familiar');
     }
 
+    public function medico()
+    {
+        return $this->hasOne('App\Models\Medico');
+    }
+
     public function getFullNameAttribute()
     {
         return $this->apellido . ', ' . $this->nombre;

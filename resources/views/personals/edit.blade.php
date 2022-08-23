@@ -130,7 +130,7 @@
 
                                         <div class="form-group">
                                             {{Form::label('matricula', 'Matricula')}}
-                                            {{Form::text('matricula', $personal->baja, ['class' => 'form-control','placeholder'=>'Matricula'])}}
+                                            {{Form::text('matricula', $personal->matricula, ['class' => 'form-control','placeholder'=>'Matricula'])}}
                                         </div>
                                     </div>
                                 </div>

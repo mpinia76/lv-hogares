@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Residente;
 use Illuminate\Database\QueryException;
+use DB;
 
 
 class ResidenteController extends Controller
@@ -75,7 +76,8 @@ class ResidenteController extends Controller
             $image->move($destinationPath, $name);
             $input['foto'] = "$name";
         }
-
+        DB::beginTransaction();
+        $ok=1;
 
         try {
             $persona = Persona::create($input);
@@ -91,16 +93,28 @@ class ResidenteController extends Controller
                 }
             }catch(QueryException $ex){
 
-                $respuestaID='error';
-                $respuestaMSJ=$ex->getMessage();
+                $error=$ex->getMessage();
+                $ok=0;
 
             }
 
 
         }
 
+        if ($ok){
+            DB::commit();
+            $respuestaID='success';
+            $respuestaMSJ='Residente creado con éxito';
+        }
+        else{
+            DB::rollback();
+            $respuestaID='error';
+            $respuestaMSJ=$error;
+        }
+
+
         return redirect()->route('residentes.index')
-            ->with('success','Residente creado con éxito');
+            ->with($respuestaID,$respuestaMSJ);
     }
 
     /**
@@ -159,26 +173,47 @@ class ResidenteController extends Controller
         }
 
         $residente = Residente::find($id);
-        $residente->update($input);
+        DB::beginTransaction();
+        $ok=1;
 
-        $update['nombre'] = $request->get('nombre');
-        $update['apellido'] = $request->get('apellido');
-        $update['email'] = $request->get('email');
-        $update['telefono'] = $request->get('telefono');
-        $update['domicilio'] = $request->get('domicilio');
-        $update['genero'] = $request->get('genero');
-        $update['foto'] = $input['foto'];
-        $update['observaciones'] = $request->get('observaciones');
-        $update['tipoDocumento'] = $request->get('tipoDocumento');
-        $update['documento'] = $request->get('documento');
-        $update['nacimiento'] = $request->get('nacimiento');
-        $update['fallecimiento'] = $request->get('fallecimiento');
+        try {
+            $residente->update($input);
+
+            $update['nombre'] = $request->get('nombre');
+            $update['apellido'] = $request->get('apellido');
+            $update['email'] = $request->get('email');
+            $update['telefono'] = $request->get('telefono');
+            $update['domicilio'] = $request->get('domicilio');
+            $update['genero'] = $request->get('genero');
+            $update['foto'] = $input['foto'];
+            $update['observaciones'] = $request->get('observaciones');
+            $update['tipoDocumento'] = $request->get('tipoDocumento');
+            $update['documento'] = $request->get('documento');
+            $update['nacimiento'] = $request->get('nacimiento');
+            $update['fallecimiento'] = $request->get('fallecimiento');
 
 
-        $residente->persona()->update($update);
+            $residente->persona()->update($update);
+        }catch(QueryException $ex){
+
+            $error=$ex->getMessage();
+            $ok=0;
+
+        }
+
+        if ($ok){
+            DB::commit();
+            $respuestaID='success';
+            $respuestaMSJ='Residente creado con éxito';
+        }
+        else{
+            DB::rollback();
+            $respuestaID='error';
+            $respuestaMSJ=$error;
+        }
 
         return redirect()->route('residentes.index')
-            ->with('success','Residente modificado con éxito');
+            ->with($respuestaID,$respuestaMSJ);
     }
 
     /**
