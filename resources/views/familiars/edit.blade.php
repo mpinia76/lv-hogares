@@ -107,7 +107,12 @@
                                             <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="{{ $residenteFamiliar->pivot->parentesco }}">
                                         </div>
                                     </div>
-
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="nombre">Principal</label><br>
+                                            <input type="checkbox"  id="principal" name="principal" {{ (isset($residenteFamiliar->pivot->principal) && $residenteFamiliar->pivot->principal === 1) ? "checked" : "" }}>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">

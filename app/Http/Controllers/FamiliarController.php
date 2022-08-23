@@ -126,7 +126,8 @@ class FamiliarController extends Controller
 
 
         if ($ok){
-            $residente->familiars()->attach($familiar, ['parentesco'=> $request->get('parentesco')]);
+            $principal = $request->get('principal')?1:0;
+            $residente->familiars()->attach($familiar, ['parentesco'=> $request->get('parentesco'),'principal'=> $principal]);
             DB::commit();
             $respuestaID='success';
             $respuestaMSJ='Familiar creado con éxito';
@@ -205,7 +206,8 @@ class FamiliarController extends Controller
 
             $idResidente = $request->get('idResidente');
             $residente = Residente::find($idResidente);
-            $residente->familiars()->updateExistingPivot($id, ['parentesco'=> $request->get('parentesco')]);
+            $principal = $request->get('principal')?1:0;
+            $residente->familiars()->updateExistingPivot($id, ['parentesco'=> $request->get('parentesco'),'principal'=> $principal]);
 
         } catch (\Exception $e) {
             $error=$e->getMessage();
@@ -246,6 +248,33 @@ class FamiliarController extends Controller
 
         return redirect()->route('familiars.index', array('residenteId' =>$idResidente))
             ->with('success','Familiar eliminado con éxito');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function autosearch(Request $request)
+    {
+        $documento = $request->search;
+        $familiars=Familiar::with('persona')->whereHas('persona', function($query) use ($documento){
+            if($documento){
+                $query->where('documento', 'LIKE', "%$documento%");
+            }
+        })->get()->sortBy(function($query){
+            return $query->persona->apellido;
+        });
+
+
+
+        $response=array();
+        foreach($familiars as $familiar){
+            $response[] = array("value"=>$familiar->id,"label"=>$familiar->persona->getFullNameAttribute().'('.$familiar->persona->documento.')',"documento"=>$familiar->persona->documento,"tipoDocumento"=>$familiar->persona->tipoDocumento,"nombre"=>$familiar->persona->nombre,"apellido"=>$familiar->persona->apellido,"genero"=>$familiar->persona->genero,"email"=>$familiar->persona->email,"telefono"=>$familiar->persona->telefono,"domicilio"=>$familiar->persona->domicilio,"nacimiento"=>($familiar->persona->nacimiento)?date('Y-m-d', strtotime($familiar->persona->nacimiento)):'',"ingreso"=>($familiar->persona->ingreso)?date('Y-m-d', strtotime($familiar->persona->ingreso)):'',"baja"=>($familiar->persona->baja)?date('Y-m-d', strtotime($familiar->persona->baja)):'',"foto"=>$familiar->persona->foto);
+        }
+
+        return response()->json($response);
+
     }
 
 

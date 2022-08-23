@@ -50,10 +50,10 @@
                                         <a href='{{ route('especialidads.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
     </div>
-                        </form>
+
                     </div>
                     <!-- /.box -->
-
+                        </form>
 
                 </div>
                 <!-- /.col-->

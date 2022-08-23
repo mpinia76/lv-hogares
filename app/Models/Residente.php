@@ -9,19 +9,28 @@ class Residente extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['persona_id','ingreso','baja'];
+    protected $fillable = ['persona_id','ingreso','baja', 'habitacion_id'];
 
     public function persona() {
         return $this->belongsTo('App\Models\Persona');
     }
 
+    public function habitacion() {
+        return $this->belongsTo('App\Models\Habitacion');
+    }
+
     public function familiars() {
 
-        return $this->belongsToMany('App\Models\Familiar', 'residente_familiars')->withPivot('parentesco');
+        return $this->belongsToMany('App\Models\Familiar', 'residente_familiars')->withPivot('parentesco','principal');
     }
 
     public function medicos() {
 
         return $this->belongsToMany('App\Models\Medico', 'residente_medicos');
+    }
+
+    public function mutuals() {
+
+        return $this->belongsToMany('App\Models\Mutual', 'residente_mutuals')->withPivot('credencial');;
     }
 }

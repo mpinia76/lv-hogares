@@ -38,6 +38,8 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">CONFIGURACION</li>
             @can('especialidad-listar')<li><a href="{{ route('especialidads.index') }}"><i class="fa fa-user-md"></i>Especialidades</a></li>@endcan
+            @can('habitacion-listar')<li><a href="{{ route('habitacions.index') }}"><i class="fa fa-bed"></i>Habitaciones</a></li>@endcan
+            @can('mutual-listar')<li><a href="{{ route('mutuals.index') }}"><i class="fa fa-plus-square-o"></i>Obras Sociales</a></li>@endcan
             @can('ocupacion-listar')<li><a href="{{ route('ocupacions.index') }}"><i class="fa fa-list"></i>Ocupaciones</a></li>@endcan
 
 

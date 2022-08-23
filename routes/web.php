@@ -12,6 +12,8 @@ use App\Http\Controllers\FamiliarController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\MedicoController;
+use App\Http\Controllers\MutualController;
+use App\Http\Controllers\HabitacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +43,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('familiars', FamiliarController::class);
     Route::resource('especialidads', EspecialidadController::class);
     Route::resource('medicos', MedicoController::class);
+    Route::resource('mutuals', MutualController::class);
+    Route::resource('habitacions', HabitacionController::class);
 });
 
-Route::get('search', [PersonaController::class, 'autosearch'])->name('search');
+Route::get('searchmedico', [MedicoController::class, 'autosearch'])->name('searchmedico');
+Route::get('searchfamiliar', [FamiliarController::class, 'autosearch'])->name('searchfamiliar');
 
 

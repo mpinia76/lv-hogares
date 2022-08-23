@@ -253,5 +253,32 @@ class MedicoController extends Controller
             ->with('success','Médico eliminado con éxito');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function autosearch(Request $request)
+    {
+        $documento = $request->search;
+        $medicos=Medico::with('persona')->whereHas('persona', function($query) use ($documento){
+            if($documento){
+                $query->where('documento', 'LIKE', "%$documento%");
+            }
+        })->get()->sortBy(function($query){
+            return $query->persona->apellido;
+        });
+
+
+        //$personas = Medico::with('persona')->where('documento','LIKE',$request->search.'%')->get();
+        $response=array();
+        foreach($medicos as $medico){
+            $response[] = array("value"=>$medico->id,"label"=>$medico->persona->getFullNameAttribute().'('.$medico->persona->documento.')',"documento"=>$medico->persona->documento,"tipoDocumento"=>$medico->persona->tipoDocumento,"nombre"=>$medico->persona->nombre,"apellido"=>$medico->persona->apellido,"genero"=>$medico->persona->genero,"email"=>$medico->persona->email,"telefono"=>$medico->persona->telefono,"domicilio"=>$medico->persona->domicilio,"nacimiento"=>($medico->persona->nacimiento)?date('Y-m-d', strtotime($medico->persona->nacimiento)):'',"ingreso"=>($medico->persona->ingreso)?date('Y-m-d', strtotime($medico->persona->ingreso)):'',"baja"=>($medico->persona->baja)?date('Y-m-d', strtotime($medico->persona->baja)):'',"foto"=>$medico->persona->foto,"matricula"=>$medico->matricula,"especialidad"=>$medico->especialidad->id);
+        }
+
+        return response()->json($response);
+
+    }
+
 
 }

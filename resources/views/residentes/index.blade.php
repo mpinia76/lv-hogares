@@ -46,6 +46,7 @@
                                     <th>Nombre</th>
                                     <th>Edad</th>
                                     <th>Ingreso</th>
+                                    <th>Habitación</th>
                                     <th>Acciones</th>
 
                                 </tr>
@@ -63,8 +64,8 @@
                                         </td>
                                         <td>{{ $residente->persona->getFullNameAttribute() }}</td>
                                         <td>{{($residente->persona->nacimiento)?$residente->persona->getAgeAttribute():''}}</td>
-                                        <td>{{date('d/m/Y', strtotime($residente->ingreso))}}</td>
-
+                                        <td>{{($residente->ingreso)?date('d/m/Y', strtotime($residente->ingreso)):''}}</td>
+                                        <td>{{($residente->habitacion)?$residente->habitacion->nombre:''}}</td>
                                         <td>@can('residente-editar')<a title="editar" href="{{ route('residentes.edit',$residente->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
                                         @can('residente-eliminar')
                                             <form id="delete-form-{{ $residente->id }}" method="post" action="{{ route('residentes.destroy',$residente->id) }}" style="display: none">
@@ -94,6 +95,7 @@
                                     <th>Nombre</th>
                                     <th>Edad</th>
                                     <th>Ingreso</th>
+                                    <th>Habitación</th>
                                     <th>Acciones</th>
 
                                 </tr>

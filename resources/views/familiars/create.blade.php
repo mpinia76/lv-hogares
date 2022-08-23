@@ -166,7 +166,7 @@
                 source: function( request, response ) {
                     // Fetch data
                     $.ajax({
-                        url:"{{route('search')}}",
+                        url:"{{route('searchfamiliar')}}",
                         type: 'get',
                         dataType: "json",
                         data: {
@@ -188,6 +188,7 @@
                     $("#genero").val(ui.item.genero);
                     $("#email").val(ui.item.email);
                     $("#domicilio").val(ui.item.domicilio);
+                    $("#telefono").val(ui.item.telefono);
                     $("#nacimiento").val(ui.item.nacimiento);
 
 

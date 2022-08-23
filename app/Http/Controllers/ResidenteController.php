@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Habitacion;
 use App\Models\Persona;
+use App\Models\Mutual;
 use Illuminate\Http\Request;
 
 use App\Models\Residente;
@@ -45,8 +47,11 @@ class ResidenteController extends Controller
      */
     public function create()
     {
-
-        return view('residentes.create');
+        $habitacions=Habitacion::orderBy('nombre','ASC')->get();
+        $habitacions = $habitacions->pluck('nombre', 'id')->prepend('','');
+        $mutuals=Mutual::orderBy('nombre','ASC')->get();
+        $mutuals = $mutuals->pluck('nombre', 'id')->prepend('','');
+        return view('residentes.create',compact('habitacions','mutuals'));
     }
 
     /**
@@ -81,14 +86,14 @@ class ResidenteController extends Controller
 
         try {
             $persona = Persona::create($input);
-            $persona->residente()->create($input);
+            $residente=$persona->residente()->create($input);
         }catch(QueryException $ex){
 
             try {
                 $persona = Persona::where('documento','=',$input['documento'])->first();
                 if (!empty($persona)){
                     $persona->update($input);
-                    $persona->residente()->create($input);
+                    $residente=$persona->residente()->create($input);
 
                 }
             }catch(QueryException $ex){
@@ -102,6 +107,23 @@ class ResidenteController extends Controller
         }
 
         if ($ok){
+
+            if(count($request->mutual) > 0)
+            {
+                foreach($request->mutual as $item=>$v){
+
+
+
+                    try {
+
+                        $residente->mutuals()->attach($request->mutual[$item], ['credencial'=> $request->credencial[$item]]);
+                    }catch(QueryException $ex){
+                        $error = $ex->getMessage();
+                        $ok=0;
+                        continue;
+                    }
+                }
+            }
             DB::commit();
             $respuestaID='success';
             $respuestaMSJ='Residente creado con éxito';
@@ -138,9 +160,11 @@ class ResidenteController extends Controller
     public function edit($id)
     {
         $residente = Residente::find($id);
-
-
-        return view('residentes.edit',compact('residente'));
+        $habitacions=Habitacion::orderBy('nombre','ASC')->get();
+        $habitacions = $habitacions->pluck('nombre', 'id')->prepend('','');
+        $mutuals=Mutual::orderBy('nombre','ASC')->get();
+        $mutuals = $mutuals->pluck('nombre', 'id')->prepend('','');
+        return view('residentes.edit',compact('residente','habitacions','mutuals'));
     }
 
     /**
@@ -185,7 +209,10 @@ class ResidenteController extends Controller
             $update['telefono'] = $request->get('telefono');
             $update['domicilio'] = $request->get('domicilio');
             $update['genero'] = $request->get('genero');
-            $update['foto'] = $input['foto'];
+            if ($input['foto']){
+                $update['foto'] = $input['foto'];
+            }
+
             $update['observaciones'] = $request->get('observaciones');
             $update['tipoDocumento'] = $request->get('tipoDocumento');
             $update['documento'] = $request->get('documento');
@@ -202,6 +229,23 @@ class ResidenteController extends Controller
         }
 
         if ($ok){
+            $residente->mutuals()->detach();
+            if(count($request->mutual) > 0)
+            {
+                foreach($request->mutual as $item=>$v){
+
+
+
+                    try {
+
+                        $residente->mutuals()->attach($request->mutual[$item], ['credencial'=> $request->credencial[$item]]);
+                    }catch(QueryException $ex){
+                        $error = $ex->getMessage();
+                        $ok=0;
+                        continue;
+                    }
+                }
+            }
             DB::commit();
             $respuestaID='success';
             $respuestaMSJ='Residente creado con éxito';

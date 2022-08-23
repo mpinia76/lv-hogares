@@ -7,20 +7,19 @@
 
 @endsection
 
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Ocupación
-                <small>Crear</small>
+                Obra Social
+                <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('ocupacions.index') }}">Ocupaciones</a></li>
-                <!--<li class="active">Create Form</li>-->
+                <li><a href="{{ route('mutuals.index') }}">Obras Sociales</a></li>
+                <!--<li class="active">Edit Form</li>-->
             </ol>
         </section>
 
@@ -31,29 +30,34 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Crear</h3>
+                            <h3 class="box-title">Editar</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('ocupacions.store') }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('mutuals.update',$mutual->id) }}" method="post">
                             {{ csrf_field() }}
+                            {{ method_field('PUT') }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
                                     @include('includes.messages')
                                     <div class="form-group">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ old('nombre') }}">
+                                        <label for="nombre">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $mutual->nombre }}@endif">
                                     </div>
+
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('ocupacions.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('mutuals.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
-    </div>
+                                </div>
 
+                            </div>
+
+                        </form>
                     </div>
                     <!-- /.box -->
-                        </form>
+
 
                 </div>
                 <!-- /.col-->

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('headSection')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.css') }}">
@@ -8,18 +9,19 @@
 
 @endsection
 
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Familiares de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-ticket" aria-hidden="true"></i>Obras Sociales
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('familiars.index') }}">Familiares</a></li>
+                <li><a href="{{ route('especialidads.index') }}">Obras Sociales</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -30,8 +32,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Familiares</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('familiars.create', array('residenteId' =>$residente->id)) }}">Nuevo</a>
+                            <h3 class="box-title">Obra Social</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('mutuals.create') }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -42,56 +44,43 @@
                                 <thead>
                                 <tr>
                                     <th>Nro.</th>
-
                                     <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Parentesco</th>
-                                    <th>Principal</th>
-                                    <th>Acciones</th>
 
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($residente->familiars as $familiar)
+        @foreach ($mutuals as $mutual)
+            <tr>
+                <td>{{ $loop->index + 1 }}</td>
+                <td>{{ $mutual->nombre }}</td>
 
-                                    <tr>
-                                        <td>{{ $loop->index + 1 }}</td>
-
-                                        <td>{{ $familiar->persona->getFullNameAttribute() }}</td>
-                                        <td>{{$familiar->persona->telefono}}</td>
-                                        <td>{{$familiar->pivot->parentesco}}</td>
-                                        <td>{{($familiar->pivot->principal)?'SI':'NO'}}</td>
-
-                                        <td>@can('familiar-editar')<a title="editar" href="{{ route('familiars.edit',array($residente->id,'idFamiliar'=>$familiar->id)) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
-                                        @can('familiar-eliminar')
-                                            <form id="delete-form-{{ $familiar->id }}" method="post" action="{{ route('familiars.destroy',array($residente->id,'idFamiliar'=>$familiar->id)) }}" style="display: none">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                            </form>
-                                            @endcan
-                                            <a title="eliminar" href="" onclick="
-                                                if(confirm('Está seguro?'))
-                                                {
-                                                event.preventDefault();
-                                                document.getElementById('delete-form-{{ $familiar->id }}').submit();
-                                                }
-                                                else{
-                                                event.preventDefault();
-                                                }" ><span class="glyphicon glyphicon-trash"></span></a>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
+                <td>@can('mutual-editar')<a href="{{ route('mutuals.edit',$mutual->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                @can('mutual-eliminar')
+                    <form id="delete-form-{{ $mutual->id }}" method="post" action="{{ route('mutuals.destroy',$mutual->id) }}" style="display: none">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                    </form>
+                    @endcan
+                    <a href="" onclick="
+                        if(confirm('Está seguro?'))
+                        {
+                        event.preventDefault();
+                        document.getElementById('delete-form-{{ $mutual->id }}').submit();
+                        }
+                        else{
+                        event.preventDefault();
+                        }" ><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        @endforeach
                                 </tbody>
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
                                     <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Parentesco</th>
-                                    <th>Principal</th>
-                                    <th>Acciones</th>
 
+                                    <th>Acciones</th>
                                 </tr>
                                 </tfoot>
                             </table>

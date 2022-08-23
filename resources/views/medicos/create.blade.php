@@ -93,7 +93,7 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             {{Form::label('especialidad', 'Especialidad')}}
-                                            {{Form::select('especialidad_id', $especialidads,'', ['class' => 'form-control'])}}
+                                            {{Form::select('especialidad_id', $especialidads,'', ['class' => 'form-control','id'=>'especialidad_id'])}}
                                         </div>
 
                                     </div>
@@ -154,7 +154,7 @@
                 source: function( request, response ) {
                     // Fetch data
                     $.ajax({
-                        url:"{{route('search')}}",
+                        url:"{{route('searchmedico')}}",
                         type: 'get',
                         dataType: "json",
                         data: {
@@ -173,10 +173,10 @@
                     $('#nombre').val(ui.item.nombre);
                     $('#apellido').val(ui.item.apellido);
 
-
+                    $("#telefono").val(ui.item.telefono);
                     $("#email").val(ui.item.email);
-
-
+                    $("#especialidad_id").val(ui.item.especialidad);
+                    $("#matricula").val(ui.item.matricula);
 
                     return false;
                 }
