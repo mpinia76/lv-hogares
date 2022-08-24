@@ -37,12 +37,16 @@
                         <form role="form" action="{{ route('roles.store') }}" method="post" >
                             {{ csrf_field() }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
-                                    <div class="form-group">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="{{ old('name') }}">
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="name">Nombre</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="{{ old('name') }}">
+                                        </div>
                                     </div>
+                                </div>
 
             <div class="form-group">
                 <strong>Permisos:</strong>

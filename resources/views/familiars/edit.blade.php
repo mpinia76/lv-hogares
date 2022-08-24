@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-people-roof" aria-hidden="true"></i>Familiar de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-people-roof" aria-hidden="true"></i>Familiar
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
@@ -30,7 +30,12 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Editar</h3>
+                            @if($residente->persona->foto)
+                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
+                            @else
+                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
+                            @endif
+                            <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
@@ -104,7 +109,7 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
                                             <label for="parentesco">Parentesco</label>
-                                            <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="@if (old('parentesco')){{ old('parentesco') }}@else{{ $familiar->pivot->parentesco }}@endif">
+                                            <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="@if (old('parentesco')){{ old('parentesco') }}@else{{ $residenteFamiliar->pivot->parentesco }}@endif">
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">

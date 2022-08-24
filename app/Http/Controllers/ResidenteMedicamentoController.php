@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Persona;
 use App\Models\Residente;
-use App\Models\ResidenteFamiliar;
+use App\Models\Medicamento;
+
 use Illuminate\Http\Request;
 
 use App\Models\Familiar;
@@ -50,7 +51,9 @@ class ResidenteMedicamentoController extends Controller
     {
         $idResidente = $request->get('residenteId');
         $residente = Residente::find($idResidente);
-        return view('residenteMedicamentos.create',compact('residente'));
+        $medicamentos=Medicamento::orderBy('nombre','ASC')->get();
+        $medicamentos = $medicamentos->pluck('full_name', 'id')->prepend('','');
+        return view('residenteMedicamentos.create',compact('residente','medicamentos'));
     }
 
     /**
@@ -62,10 +65,11 @@ class ResidenteMedicamentoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'nullable|email',
-            'documento' => 'required'
+            'medicamento' => 'required',
+            'alta' => 'required',
+            'stock' => 'required',
+            'dosis' => 'required',
+            'toma' => 'required'
         ]);
 
 
@@ -73,39 +77,18 @@ class ResidenteMedicamentoController extends Controller
 
         $idResidente = $request->get('idResidente');
         $residente = Residente::find($idResidente);
+        $medicamento = Medicamento::find($request->get('medicamento'));
         DB::beginTransaction();
         $ok=1;
 
+
             try {
-                $persona = Persona::create($input);
-
-            }catch(QueryException $ex){
-
-                try {
-                    $persona = Persona::where('documento','=',$input['documento'])->first();
-                    if (!empty($persona)){
-                        $persona->update($input);
-
-
-                    }
-                }catch(QueryException $ex){
-
-                    $error=$ex->getMessage();
-                    $ok=0;
-                }
-
-
-            }
-            try {
-                $familiar=$persona->familiar()->create($input);
+                $residente->medicamentos()->attach($medicamento, ['alta'=> $request->get('alta'),'stock'=> $request->get('stock'),'dosis'=> $request->get('dosis'),'toma'=> $request->get('toma'),'suspension'=> $request->get('suspension')]);
 
 
 
             }catch(QueryException $ex){
-                try {
-                    $familiar = Familiar::where('persona_id','=',$persona->id)->first();
 
-                }catch(QueryException $ex){
 
                     $errorCode = $ex->errorInfo[1];
                     if($errorCode == 1062){
@@ -116,7 +99,7 @@ class ResidenteMedicamentoController extends Controller
                     }
 
                     $ok=0;
-                }
+
 
 
 
@@ -126,8 +109,8 @@ class ResidenteMedicamentoController extends Controller
 
 
         if ($ok){
-            $principal = $request->get('principal')?1:0;
-            $residente->medicamentos()->attach($medicamento, ['parentesco'=> $request->get('parentesco'),'principal'=> $principal]);
+
+
             DB::commit();
             $respuestaID='success';
             $respuestaMSJ='Medicamento creado con éxito';
@@ -158,9 +141,10 @@ class ResidenteMedicamentoController extends Controller
         $residente = Residente::find($idResidente);
         $medicamento = Medicamento::find($idMedicamento);
         $residenteMedicamento = $residente->medicamentos()->find($idMedicamento);
-        //$parentesco = $residenteFamiliar->pivot->parentesco;
+        $medicamentos=Medicamento::orderBy('nombre','ASC')->get();
+        $medicamentos = $medicamentos->pluck('full_name', 'id')->prepend('','');
 
-        return view('residenteMedicamentos.edit',compact('residente','medicamento','residenteMedicamento'));
+        return view('residenteMedicamentos.edit',compact('residente','medicamento','residenteMedicamento','medicamentos'));
     }
 
     /**
@@ -172,10 +156,11 @@ class ResidenteMedicamentoController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'nullable|email',
-            'documento' => 'required'
+            'medicamento' => 'required',
+            'alta' => 'required',
+            'stock' => 'required',
+            'dosis' => 'required',
+            'toma' => 'required'
         ]);
 
 
@@ -189,8 +174,8 @@ class ResidenteMedicamentoController extends Controller
 
             $idResidente = $request->get('idResidente');
             $residente = Residente::find($idResidente);
-            $principal = $request->get('principal')?1:0;
-            $residente->medicamentos()->updateExistingPivot($id, ['parentesco'=> $request->get('parentesco'),'principal'=> $principal]);
+
+            $residente->medicamentos()->updateExistingPivot($id, ['alta'=> $request->get('alta'),'stock'=> $request->get('stock'),'dosis'=> $request->get('dosis'),'toma'=> $request->get('toma'),'suspension'=> $request->get('suspension')]);
 
         } catch (\Exception $e) {
             $error=$e->getMessage();

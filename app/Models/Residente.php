@@ -36,6 +36,6 @@ class Residente extends Model
 
     public function medicamentos() {
 
-        return $this->belongsToMany('App\Models\Medicamento', 'residente_medicamentos')->withPivot('toma','dosis','stock','alta');
+        return $this->belongsToMany('App\Models\Medicamento', 'residente_medicamentos')->withPivot('toma','dosis','stock','alta','suspension');
     }
 }

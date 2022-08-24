@@ -38,17 +38,24 @@
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Nombre</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $habitacion->nombre }}@endif">
                                     </div>
+                                    </div>
+
+                                        <div class="col-lg-offset-3 col-lg-6 col-md-6">
                                     <div class="form-group">
                                         {{Form::label('descripcion', 'Descripción')}}
                                         {{Form::textarea('descripcion', $habitacion->descripcion, ['class' => 'form-control'])}}
 
                                     </div>
+                                        </div>
+                                </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>

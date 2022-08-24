@@ -97,7 +97,7 @@ class FamiliarController extends Controller
 
             }
             try {
-                $familiar=$persona->familiar()->create($input);
+                $familiar=$persona->familiars()->create($input);
 
 
 

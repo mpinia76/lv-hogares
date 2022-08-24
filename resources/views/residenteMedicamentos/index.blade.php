@@ -14,12 +14,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-user-md" aria-hidden="true"></i> Médicos
+                <i class="fa fa-capsules" aria-hidden="true"></i> Medicamentos
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('medicos.index') }}">Médicos</a></li>
+                <li><a href="{{ route('residenteMedicamentos.index') }}">Medicamentos</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -30,13 +30,14 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
+
                             @if($residente->persona->foto)
                                 <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
                             @else
                                 <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
                             @endif
-                            <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('medicos.create', array('residenteId' =>$residente->id)) }}">Nuevo</a>
+                                <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('residenteMedicamentos.create', array('residenteId' =>$residente->id)) }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -48,26 +49,44 @@
                                 <tr>
                                     <th>Nro.</th>
 
-                                    <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Especialidad</th>
+                                    <th>Medicamento</th>
+                                    <th>Alta</th>
+                                    <th>Stock</th>
+                                    <th>Actual</th>
+                                    <th>D. diaria</th>
+                                    <th>Toma diaria</th>
+                                    <th>Reposición</th>
+                                    <th>Suspensión</th>
                                     <th>Acciones</th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($residente->medicos as $medico)
+                                @foreach ($residente->medicamentos as $medicamento)
+                                    <?php
+                                        $color='#ffffff';
 
-                                    <tr>
+                                        if ($medicamento->getReponerAttribute()==1){
+                                            $color='orange';
+                                        }
+                                        if(($medicamento->pivot->suspension)&&($medicamento->pivot->suspension<now())){
+                                            $color='#ADD8E6';
+                                        }
+                                        ?>
+                                    <tr style="background-color: {{$color}}">
                                         <td>{{ $loop->index + 1 }}</td>
 
-                                        <td>{{ $medico->persona->getFullNameAttribute() }}</td>
-                                        <td>{{$medico->persona->telefono}}</td>
-                                        <td>{{$medico->especialidad->nombre}}</td>
-
-                                        <td>@can('medico-editar')<a title="editar" href="{{ route('medicos.edit',array($residente->id,'idMedico'=>$medico->id)) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
-                                        @can('medico-eliminar')
-                                            <form id="delete-form-{{ $medico->id }}" method="post" action="{{ route('medicos.destroy',array($residente->id,'idMedico'=>$medico->id)) }}" style="display: none">
+                                        <td>{{ $medicamento->getFullNameAttribute() }}</td>
+                                        <td>{{($medicamento->pivot->alta)?date('d/m/Y', strtotime($medicamento->pivot->alta)):''}}</td>
+                                        <td>{{$medicamento->pivot->stock}}</td>
+                                        <td>{{$medicamento->getStockActualAttribute()}}</td>
+                                        <td>{{$medicamento->pivot->dosis}}</td>
+                                        <td>{{$medicamento->pivot->toma}}</td>
+                                        <td>{{date('d/m/Y', strtotime($medicamento->getReposicionAttribute()))}}</td>
+                                        <td>{{($medicamento->pivot->suspension)?date('d/m/Y', strtotime($medicamento->pivot->suspension)):''}}</td>
+                                        <td>@can('residenteMedicamento-editar')<a title="editar" href="{{ route('residenteMedicamentos.edit',array($residente->id,'idMedicamento'=>$medicamento->id)) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                                        @can('residenteMedicamento-eliminar')
+                                            <form id="delete-form-{{ $medicamento->id }}" method="post" action="{{ route('residenteMedicamentos.destroy',array($residente->id,'idMedicamento'=>$medicamento->id)) }}" style="display: none">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                             </form>
@@ -76,7 +95,7 @@
                                                 if(confirm('Está seguro?'))
                                                 {
                                                 event.preventDefault();
-                                                document.getElementById('delete-form-{{ $medico->id }}').submit();
+                                                document.getElementById('delete-form-{{ $medicamento->id }}').submit();
                                                 }
                                                 else{
                                                 event.preventDefault();
@@ -89,14 +108,32 @@
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Especialidad</th>
+
+                                    <th>Medicamento</th>
+                                    <th>Alta</th>
+                                    <th>Stock</th>
+                                    <th>Actual</th>
+                                    <th>D. diaria</th>
+                                    <th>Toma diaria</th>
+                                    <th>Reposición</th>
+                                    <th>Suspensión</th>
                                     <th>Acciones</th>
 
                                 </tr>
                                 </tfoot>
+
                             </table>
+                            <div class="row">
+                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                    <div style="background-color: orange">Reponer medicación</div>
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                    <div style="background-color: #ADD8E6">Medicación suspendida</div>
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                    <div style="background-color: #ffffff">Medicación vigente</div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>

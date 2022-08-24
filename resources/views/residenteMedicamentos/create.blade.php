@@ -4,8 +4,9 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
            folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endsection
+
 
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -13,13 +14,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-user" aria-hidden="true"></i> Usuario
-                <small>Editar</small>
+                <i class="fa fa-capsules" aria-hidden="true"></i> Medicamento
+                <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('users.index') }}">Usuarios</a></li>
-                <!--<li class="active">Edit Form</li>-->
+                <li><a href="{{ route('residenteMedicamentos.index', array('residenteId' =>$residente->id))  }}">Medicamentos</a></li>
+                <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
 
@@ -27,60 +28,67 @@
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
+
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Editar</h3>
+                            @if($residente->persona->foto)
+                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
+                            @else
+                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
+                            @endif
+                            <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('users.update',$user->id) }}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('residenteMedicamentos.store') }}" method="post">
                             {{ csrf_field() }}
-                            {{ method_field('PUT') }}
                             <div class="box-body">
-
-                                    @include('includes.messages')
+                                @include('includes.messages')
+                                {{Form::hidden('idResidente',$residente->id)}}
                                 <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
-                                        <div class="form-group">
-                                            <label for="name">Nombre</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="@if (old('name')){{ old('name') }}@else{{ $user->name }}@endif">
-                                        </div>
-                                    </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="email" value="@if (old('email')){{ old('email') }}@else{{ $user->email }}@endif">
+                                            <label for="medicamento">Medicamento</label>
+                                            {{ Form::select('medicamento',$medicamentos, '',['class' => 'form-control js-example-basic-single']) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            {{Form::label('alta', 'Alta')}}
+                                            {{Form::date('alta', date("Y-m-d", strtotime(now())), ['class' => 'form-control','placeholder'=>'Alta'])}}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password" placeholder="clave" value="{{ old('password') }}">
+                                            {{Form::label('stock', 'Stock')}}
+                                            {{Form::number('stock', '', ['class' => 'form-control','placeholder'=>'Stock'])}}
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
-                                        <div class="form-group">
-                                            <label for="password_confirmation">Confirmar clave </label>
-                                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirmar clave">
-                                        </div>
-                                    </div>
+
+
+
+
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-5">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
-                                            <label for="foto">Foto</label>
-                                            @if($user->image)
-                                                <img id="original" src="{{ url('images/'.$user->image) }}" height="200">
-                                            @endif
-                                            <input type="file" name="image" class="form-control" placeholder="">
+                                            {{Form::label('dosis', 'Dosis diaria')}}
+                                            {{Form::number('dosis', '', ['class' => 'form-control','placeholder'=>'Dosis','step' => '0.01'])}}
+                                        </div>
 
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
+
+                                        <div class="form-group">
+                                            <label for="toma">Toma diaria</label>
+                                            <input type="text" class="form-control" id="toma" name="toma" placeholder="Toma diaria" value="{{ old('toma') }}">
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-3 col-lg-6 col-md-5">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
-                                            <label for="roles">Roles</label>
-                                            {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}
+                                            {{Form::label('suspension', 'Suspensión')}}
+                                            {{Form::date('suspension', '', ['class' => 'form-control','placeholder'=>'Suspensión'])}}
                                         </div>
                                     </div>
                                 </div>
@@ -88,12 +96,9 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('users.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('residenteMedicamentos.index', array('residenteId' =>$residente->id)) }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
-
-                            </div>
-
                         </form>
                     </div>
                     <!-- /.box -->
@@ -109,6 +114,7 @@
     <!-- /.content-wrapper -->
 @endsection
 @section('footerSection')
+
     <!-- jQuery 3 -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
@@ -124,5 +130,16 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- page script -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.js-example-basic-single').select2();
+
+        });
+    </script>
+
+
 
 @endsection

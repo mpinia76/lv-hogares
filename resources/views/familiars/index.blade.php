@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-people-roof" aria-hidden="true"></i>Familiares de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-people-roof" aria-hidden="true"></i> Familiares
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
@@ -30,7 +30,12 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Familiares</h3>
+                            @if($residente->persona->foto)
+                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
+                            @else
+                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
+                            @endif
+                            <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
                             <a class='pull-right btn btn-success' href="{{ route('familiars.create', array('residenteId' =>$residente->id)) }}">Nuevo</a>
                         </div>
                         @include('includes.messages')

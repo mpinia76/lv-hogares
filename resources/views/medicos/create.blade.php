@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-user-md" aria-hidden="true"></i>Médico de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-user-md" aria-hidden="true"></i> Médico
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
@@ -32,7 +32,12 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Crear</h3>
+                            @if($residente->persona->foto)
+                                <img id="original" class="img-circle" src="{{ url('images/'.$residente->persona->foto) }}" width="100px;">
+                            @else
+                                <img id="original" class="img-circle" src="{{ url('images/user.png') }}" >
+                            @endif
+                            <h3 class="box-title"> {{ $residente->persona->getFullNameAttribute() }}</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->

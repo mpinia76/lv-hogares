@@ -38,13 +38,16 @@
                         <form role="form" action="{{ route('ocupacions.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                     <div class="form-group">
                                         <label for="name">Nombre</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ old('nombre') }}">
                                     </div>
-
+                                    </div>
+                                </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         <a href='{{ route('ocupacions.index') }}' class="btn btn-warning">Volver</a>

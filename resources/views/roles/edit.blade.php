@@ -38,12 +38,16 @@
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
-                                    <div class="form-group">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="@if (old('name')){{ old('name') }}@else{{ $role->name }}@endif">
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="name">Nombre</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="@if (old('name')){{ old('name') }}@else{{ $role->name }}@endif">
+                                        </div>
                                     </div>
+                                </div>
 
             <div class="form-group">
                 <label for="permisos">Permisos</label>

@@ -38,17 +38,22 @@
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Nombre comercial</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre comercial" value="@if (old('nombre')){{ old('nombre') }}@else{{ $medicamento->nombre }}@endif">
                                     </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Genérico</label>
                                         <input type="text" class="form-control" id="generico" name="generico" placeholder="Genérico" value="@if (old('generico')){{ old('generico') }}@else{{ $medicamento->generico }}@endif">
                                     </div>
-
+                                    </div>
+                                </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         <a href='{{ route('medicamentos.index') }}' class="btn btn-warning">Volver</a>

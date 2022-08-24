@@ -38,34 +38,51 @@
                         <form role="form" action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="box-body">
-                                <div class="col-lg-offset-3 col-lg-6">
+
                                     @include('includes.messages')
-                                    <div class="form-group">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="{{ old('name') }}">
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="name">Nombre</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="{{ old('name') }}">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="email" value="{{ old('email') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Clave</label>
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="clave" value="{{ old('password') }}">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-4">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="email" value="{{ old('email') }}">
+                                        </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="password_confirmation">Confirmar clave</label>
-                                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="confirmar clave">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="password">Clave</label>
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="clave" value="{{ old('password') }}">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="roles">Roles</label>
-                                        {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="password_confirmation">Confirmar clave</label>
+                                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="confirmar clave">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        Imagen
-                                        <input type="file" name="image" class="form-control" placeholder="">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-5">
+                                        <div class="form-group">
+                                            <label for="foto">Foto</label>
+                                            <input type="file" name="image" class="form-control" placeholder="">
 
+                                        </div>
                                     </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-5">
+                                        <div class="form-group">
+                                            <label for="roles">Roles</label>
+                                            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         <a href='{{ route('users.index') }}' class="btn btn-warning">Volver</a>
