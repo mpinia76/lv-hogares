@@ -173,4 +173,58 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success','Usuario eliminado con éxito');
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function perfil(Request $request)
+    {
+        $user = User::find($request->get('idUser'));
+
+
+        return view('users.perfil',compact('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePerfil(Request $request)
+    {
+       $id=$request->get('idUser');
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'confirmed',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $input = $request->all();
+        if(!empty($input['password'])){
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = Arr::except($input,array('password'));
+        }
+
+        if ($files = $request->file('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $input['image'] = "$name";
+        }
+
+        $user = User::find($id);
+        $user->update($input);
+
+
+        return redirect()->route('residentes.index')
+            ->with('success','Perfil modificado con éxito');
+    }
 }

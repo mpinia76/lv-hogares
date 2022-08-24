@@ -47,8 +47,8 @@
                                     <th>Nombre</th>
                                     <th>E-mail</th>
                                     <th>Roles</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th>Acciones</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -67,8 +67,8 @@
                         @endforeach
                     @endif
                 </td>
-                @can('usuario-editar')<td><a href="{{ route('users.edit',$user->id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>@endcan
-                @can('usuario-eliminar')<td>
+                <td>@can('usuario-editar')<a href="{{ route('users.edit',$user->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                @can('usuario-eliminar')
                     <form id="delete-form-{{ $user->id }}" method="post" action="{{ route('users.destroy',$user->id) }}" style="display: none">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}

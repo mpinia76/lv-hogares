@@ -39,6 +39,8 @@ Route::get('/home', [ResidenteController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::get('perfil', [UserController::class, 'perfil'])->name('users.perfil');
+    Route::post('updatePerfil', [UserController::class, 'updatePerfil'])->name('users.updatePerfil');
     Route::resource('residentes', ResidenteController::class);
     Route::resource('ocupacions', OcupacionController::class);
     Route::resource('personals', PersonalController::class);

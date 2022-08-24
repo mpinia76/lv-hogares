@@ -266,7 +266,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="{{ route('users.perfil',array('idUser'=>Auth::user()->id)) }}" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="btn btn-default pull-right">
                       <a href="{{ route('logout') }}"
