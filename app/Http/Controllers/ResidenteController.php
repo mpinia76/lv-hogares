@@ -108,7 +108,7 @@ class ResidenteController extends Controller
 
         if ($ok){
 
-            if(count($request->mutual) > 0)
+            if(!empty($request->mutual))
             {
                 foreach($request->mutual as $item=>$v){
 
@@ -230,7 +230,8 @@ class ResidenteController extends Controller
 
         if ($ok){
             $residente->mutuals()->detach();
-            if(count($request->mutual) > 0)
+
+            if(!empty($request->mutual))
             {
                 foreach($request->mutual as $item=>$v){
 
