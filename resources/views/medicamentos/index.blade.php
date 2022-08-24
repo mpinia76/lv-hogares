@@ -16,12 +16,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-briefcase-medical" aria-hidden="true"></i> Obras Sociales
+                <i class="fa fa-capsules" aria-hidden="true"></i> Medicamentos
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('especialidads.index') }}">Obras Sociales</a></li>
+                <li><a href="{{ route('ocupacions.index') }}">Medicamentos</a></li>
                 <!--<li class="active">Data tables</li>-->
             </ol>
         </section>
@@ -32,8 +32,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Obra Social</h3>
-                            <a class='pull-right btn btn-success' href="{{ route('mutuals.create') }}">Nuevo</a>
+                            <h3 class="box-title">Ocupación</h3>
+                            <a class='pull-right btn btn-success' href="{{ route('medicamentos.create') }}">Nuevo</a>
                         </div>
                         @include('includes.messages')
 
@@ -44,20 +44,20 @@
                                 <thead>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th>Nombre</th>
-
+                                    <th>Nombre comercial</th>
+                                    <th>Genérico</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-        @foreach ($mutuals as $mutual)
+        @foreach ($medicamentos as $medicamento)
             <tr>
                 <td>{{ $loop->index + 1 }}</td>
-                <td>{{ $mutual->nombre }}</td>
-
-                <td>@can('mutual-editar')<a href="{{ route('mutuals.edit',$mutual->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
-                @can('mutual-eliminar')
-                    <form id="delete-form-{{ $mutual->id }}" method="post" action="{{ route('mutuals.destroy',$mutual->id) }}" style="display: none">
+                <td>{{ $medicamento->nombre }}</td>
+                <td>{{ $medicamento->generico }}</td>
+                <td>@can('medicamento-editar')<a href="{{ route('medicamentos.edit',$medicamento->id) }}"><span class="glyphicon glyphicon-edit"></span></a>@endcan
+                @can('medicamento-eliminar')
+                    <form id="delete-form-{{ $medicamento->id }}" method="post" action="{{ route('medicamentos.destroy',$medicamento->id) }}" style="display: none">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                     </form>
@@ -66,7 +66,7 @@
                         if(confirm('Está seguro?'))
                         {
                         event.preventDefault();
-                        document.getElementById('delete-form-{{ $mutual->id }}').submit();
+                        document.getElementById('delete-form-{{ $medicamento->id }}').submit();
                         }
                         else{
                         event.preventDefault();
@@ -78,7 +78,8 @@
                                 <tfoot>
                                 <tr>
                                     <th>Nro.</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre comercial</th>
+                                    <th>Genérico</th>
 
                                     <th>Acciones</th>
                                 </tr>

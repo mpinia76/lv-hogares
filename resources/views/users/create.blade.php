@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Usuario
+                <i class="fa fa-user" aria-hidden="true"></i> Usuario
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">

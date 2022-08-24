@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Ocupación
+                <i class="fa fa-list" aria-hidden="true"></i> Ocupación
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">

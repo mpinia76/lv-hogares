@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Rol
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Rol
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">

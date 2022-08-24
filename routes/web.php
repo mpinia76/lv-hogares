@@ -14,6 +14,8 @@ use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MutualController;
 use App\Http\Controllers\HabitacionController;
+use App\Http\Controllers\MedicamentoController;
+use App\Http\Controllers\ResidenteMedicamentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('medicos', MedicoController::class);
     Route::resource('mutuals', MutualController::class);
     Route::resource('habitacions', HabitacionController::class);
+    Route::resource('medicamentos', MedicamentoController::class);
+    Route::resource('residenteMedicamentos', ResidenteMedicamentoController::class);
 });
 
 Route::get('searchmedico', [MedicoController::class, 'autosearch'])->name('searchmedico');

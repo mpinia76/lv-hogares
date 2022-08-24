@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Roles
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Roles
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">

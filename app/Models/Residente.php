@@ -33,4 +33,9 @@ class Residente extends Model
 
         return $this->belongsToMany('App\Models\Mutual', 'residente_mutuals')->withPivot('credencial');;
     }
+
+    public function medicamentos() {
+
+        return $this->belongsToMany('App\Models\Medicamento', 'residente_medicamentos')->withPivot('toma','dosis','stock','alta');
+    }
 }

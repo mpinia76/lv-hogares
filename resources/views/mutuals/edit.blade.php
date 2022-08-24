@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Obra Social
+                <i class="fa fa-briefcase-medical" aria-hidden="true"></i> Obra Social
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">

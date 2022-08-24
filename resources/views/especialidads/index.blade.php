@@ -16,7 +16,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Especialidades
+                <i class="fa fa-stethoscope" aria-hidden="true"></i>Especialidades
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">

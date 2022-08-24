@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Especialidad
+                <i class="fa fa-stethoscope" aria-hidden="true"></i>Especialidad
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">

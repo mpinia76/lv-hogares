@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Médico de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-user-md" aria-hidden="true"></i>Médico de {{ $residente->persona->getFullNameAttribute() }}
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
@@ -65,7 +65,7 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
                                             <label for="apellido">Apellido</label>
-                                            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Nombre" value="{{ old('apellido') }}">
+                                            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" value="{{ old('apellido') }}">
                                         </div>
                                     </div>
 

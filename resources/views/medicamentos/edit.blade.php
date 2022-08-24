@@ -13,12 +13,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-bed" aria-hidden="true"></i> Habitación
+                <i class="fa fa-capsules" aria-hidden="true"></i> Medicamento
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('habitacions.index') }}">Habitaciones</a></li>
+                <li><a href="{{ route('medicamentos.index') }}">Medicamentos</a></li>
                 <!--<li class="active">Edit Form</li>-->
             </ol>
         </section>
@@ -34,25 +34,24 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('habitacions.update',$habitacion->id) }}" method="post">
+                        <form role="form" action="{{ route('medicamentos.update',$medicamento->id) }}" method="post">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
                                     @include('includes.messages')
                                     <div class="form-group">
-                                        <label for="nombre">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $habitacion->nombre }}@endif">
+                                        <label for="nombre">Nombre comercial</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre comercial" value="@if (old('nombre')){{ old('nombre') }}@else{{ $medicamento->nombre }}@endif">
                                     </div>
                                     <div class="form-group">
-                                        {{Form::label('descripcion', 'Descripción')}}
-                                        {{Form::textarea('descripcion', $habitacion->descripcion, ['class' => 'form-control'])}}
-
+                                        <label for="nombre">Genérico</label>
+                                        <input type="text" class="form-control" id="generico" name="generico" placeholder="Genérico" value="@if (old('generico')){{ old('generico') }}@else{{ $medicamento->generico }}@endif">
                                     </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('habitacions.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('medicamentos.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
                                 </div>
 

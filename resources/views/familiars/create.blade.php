@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Familiar de {{ $residente->persona->getFullNameAttribute() }}
+                <i class="fa fa-people-roof" aria-hidden="true"></i>Familiar de {{ $residente->persona->getFullNameAttribute() }}
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
@@ -105,8 +105,14 @@
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">
                                         <div class="form-group">
-                                            <label for="nombre">Parentesco</label>
+                                            <label for="parentesco">Parentesco</label>
                                             <input type="text" class="form-control" id="parentesco" name="parentesco" placeholder="Parentesco" value="{{ old('parentesco') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="principal">Principal</label><br>
+                                            <input type="checkbox"  id="principal" name="principal" >
                                         </div>
                                     </div>
 

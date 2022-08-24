@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Personal
+                <i class="fa fa-user-md" aria-hidden="true"></i> Personal
                 <small>Editar</small>
             </h1>
             <ol class="breadcrumb">
@@ -43,14 +43,14 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
 
                                         <div class="form-group">
-                                            {{Form::label('nombre', 'Nombre')}}
-                                            {{Form::text('nombre', $personal->persona->nombre, ['class' => 'form-control','placeholder'=>'Nombre'])}}
+                                            <label for="nombre">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $personal->persona->nombre }}@endif">
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-4">
                                         <div class="form-group">
-                                            {{Form::label('apellido', 'Apellido')}}
-                                            {{Form::text('apellido', $personal->persona->apellido, ['class' => 'form-control','placeholder'=>'Apellido'])}}
+                                            <label for="apellido">Apellido</label>
+                                            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" value="@if (old('apellido')){{ old('apellido') }}@else{{ $personal->persona->apellido }}@endif">
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
@@ -97,7 +97,7 @@
                                     <div class="col-lg-offset-3 col-lg-6 col-md-2">
                                         <div class="form-group">
                                             {{Form::label('telefono', 'Teléfono')}}
-                                            {{Form::text('telefono', $personal->persona->telefono, ['class' => 'form-control','placeholder'=>'Telefono'])}}
+                                            {{Form::text('telefono', $personal->persona->telefono, ['class' => 'form-control','placeholder'=>'Teléfono'])}}
                                         </div>
                                     </div>
                                     <div class="col-lg-offset-3 col-lg-6 col-md-3">

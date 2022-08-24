@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Habitación
+                <i class="fa fa-bed" aria-hidden="true"></i> Habitación
                 <small>Crear</small>
             </h1>
             <ol class="breadcrumb">

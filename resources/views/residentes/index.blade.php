@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Residentes
+                <i class="fa fa-users" aria-hidden="true"></i> Residentes
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
@@ -84,6 +84,7 @@
                                                 }" ><span class="glyphicon glyphicon-trash"></span></a>
                                             @can('familiar-listar')<a title="familiares" href="{{ route('familiars.index', array('residenteId' =>$residente->id)) }}"><span class="glyphicon glyphicon-user"></span></a>@endcan
                                             @can('medico-listar')<a title="médicos" href="{{ route('medicos.index', array('residenteId' =>$residente->id)) }}"><span class="glyphicon glyphicon-education"></span></a>@endcan
+                                            @can('residenteMedicamento-listar')<a title="medicamentos" href="{{ route('residenteMedicamentos.index', array('residenteId' =>$residente->id)) }}"><span class="glyphicon glyphicon-erase"></span></a>@endcan
                                         </td>
                                     </tr>
                                 @endforeach

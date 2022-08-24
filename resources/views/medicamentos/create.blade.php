@@ -7,19 +7,20 @@
 
 @endsection
 
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-bed" aria-hidden="true"></i> Habitación
-                <small>Editar</small>
+                <i class="fa fa-capsules" aria-hidden="true"></i> Medicamento
+                <small>Crear</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="{{ route('habitacions.index') }}">Habitaciones</a></li>
-                <!--<li class="active">Edit Form</li>-->
+                <li><a href="{{ route('medicamentos.index') }}">Medicamentos</a></li>
+                <!--<li class="active">Create Form</li>-->
             </ol>
         </section>
 
@@ -30,38 +31,33 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Editar</h3>
+                            <h3 class="box-title">Crear</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('habitacions.update',$habitacion->id) }}" method="post">
+                        <form role="form" action="{{ route('medicamentos.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            {{ method_field('PUT') }}
                             <div class="box-body">
                                 <div class="col-lg-offset-3 col-lg-6">
                                     @include('includes.messages')
                                     <div class="form-group">
-                                        <label for="nombre">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="@if (old('nombre')){{ old('nombre') }}@else{{ $habitacion->nombre }}@endif">
+                                        <label for="name">Nombre Comercial</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre comercial" value="{{ old('nombre') }}">
                                     </div>
                                     <div class="form-group">
-                                        {{Form::label('descripcion', 'Descripción')}}
-                                        {{Form::textarea('descripcion', $habitacion->descripcion, ['class' => 'form-control'])}}
-
+                                        <label for="name">Genérico</label>
+                                        <input type="text" class="form-control" id="generico" name="generico" placeholder="Genérico" value="{{ old('generico') }}">
                                     </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href='{{ route('habitacions.index') }}' class="btn btn-warning">Volver</a>
+                                        <a href='{{ route('medicamentos.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
-                                </div>
+    </div>
 
-                            </div>
-
-                        </form>
                     </div>
                     <!-- /.box -->
-
+                        </form>
 
                 </div>
                 <!-- /.col-->

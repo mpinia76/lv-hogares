@@ -16,7 +16,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <i class="fa fa-ticket" aria-hidden="true"></i>Habitaciones
+                <i class="fa fa-bed" aria-hidden="true"></i> Habitaciones
                 <!--<small>Create, Read, Update, Delete</small>-->
             </h1>
             <ol class="breadcrumb">
