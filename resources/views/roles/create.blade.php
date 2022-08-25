@@ -63,9 +63,10 @@
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         <a href='{{ route('roles.index') }}' class="btn btn-warning">Volver</a>
                                     </div>
+                            </div>
 
                         </form>
-                    </div>
+
                 </div>
                     <!-- /.box -->
 
