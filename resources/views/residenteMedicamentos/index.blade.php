@@ -124,13 +124,13 @@
 
                             </table>
                             <div class="row">
-                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                <div class="col-lg-offset-0 col-lg-2 col-md-2">
                                     <div style="background-color: orange">Reponer medicación</div>
                                 </div>
-                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                <div class="col-lg-offset-0 col-lg-2 col-md-2">
                                     <div style="background-color: #ADD8E6">Medicación suspendida</div>
                                 </div>
-                                <div class="col-lg-offset-3 col-lg-6 col-md-3">
+                                <div class="col-lg-offset-0 col-lg-2 col-md-2">
                                     <div style="background-color: #ffffff">Medicación vigente</div>
                                 </div>
                             </div>
