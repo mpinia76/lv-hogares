@@ -64,7 +64,7 @@
                                 <tbody>
                                 @foreach ($residente->medicamentos as $medicamento)
                                     <?php
-                                        $color='#ffffff';
+                                        $color='#f9f9f9';
 
                                         if ($medicamento->getReponerAttribute()==1){
                                             $color='orange';
@@ -131,7 +131,7 @@
                                     <div style="background-color: #ADD8E6">Medicación suspendida</div>
                                 </div>
                                 <div class="col-lg-offset-0 col-lg-2 col-md-2">
-                                    <div style="background-color: #ffffff">Medicación vigente</div>
+                                    <div style="background-color: #f9f9f9">Medicación vigente</div>
                                 </div>
                             </div>
                         </div>
