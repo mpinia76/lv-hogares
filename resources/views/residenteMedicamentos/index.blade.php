@@ -169,6 +169,8 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable({
+                responsive: true,
+                scrollX: true,
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.12.1/i18n/es-AR.json"
                 }
