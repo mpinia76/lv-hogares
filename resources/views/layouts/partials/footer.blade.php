@@ -30,6 +30,13 @@
 {{-- <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script> --}}
 <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
+    <script>
+        $(window).on('load',function(){
+            console.log('carga');
+            $('.load').hide();
+            $('.wrapper').css('filter','blur(0)');
+        });
+    </script>
     @section('footerSection')
     @show
 </footer>

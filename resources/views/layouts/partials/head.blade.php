@@ -36,5 +36,34 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
+<style>
+    
+    .load{
+        position: fixed;
+        z-index: 9999;
+        width: 100%;
+        height: 100%;
+    }
+    .load .in{
+        width: 400px;
+        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 10%;
+    }
+    .wrapper {
+        filter: blur(3px);
+    }
+    img {
+        vertical-align: middle;
+    }
+    img {
+        border: 0;
+    }
+</style>
+<div class="load">
+    <div class="in"><img width="20%" src="{{ url('/images/hourglass.svg') }}"></div>
+</div>
+
    @section('headSection')
   @show
