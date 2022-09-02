@@ -122,6 +122,7 @@
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- DataTables -->
     <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+
     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
     <!-- SlimScroll -->
     <script src="{{ asset('bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
@@ -137,22 +138,13 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable({
-                "responsive": true,
+                responsive: true,
+                scrollX: true,
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.12.1/i18n/es-AR.json"
                 }
             });
         });
-        $(function () {
-            $('#example1').DataTable()
-            $('#example2').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-            })
-        })
+
     </script>
 @endsection
